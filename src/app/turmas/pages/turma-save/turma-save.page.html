@@ -1,0 +1,59 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/turmas">
+			</ion-back-button>
+		</ion-buttons>
+
+		<ion-title>
+			{{pageTitle}}
+		</ion-title>
+
+		<app-logout-button slot="end" menu="main-menu">
+		</app-logout-button>
+
+	</ion-toolbar>
+</ion-header>
+
+
+<ion-content class="ion-padding">
+
+	<form [formGroup]="turmaForm"
+		  (submit)="onSubmit()">
+		<ion-item>
+			<ion-icon name="paper"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-input type="text"
+					   placeholder="Nome"
+					   autofocus="true"
+					   inputmode="text"
+					   formControlName="name">
+			</ion-input>
+
+		</ion-item>
+
+		<ion-item>
+			<ion-icon name="eye-off"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+
+			<ion-input type="password"
+					   placeholder="Senha"
+					   inputmode="password"
+					   formControlName="password">
+			</ion-input>
+
+		</ion-item>
+
+		<ion-button expand="full"
+					type="submit"
+					[disabled]="turmaForm.invalid">
+			Salvar
+		</ion-button>
+
+	</form>
+</ion-content>
+

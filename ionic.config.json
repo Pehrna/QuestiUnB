@@ -1,5 +1,7 @@
 {
   "name": "copia",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,72 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/turmas/${id}/topicos">
+
+			</ion-back-button>
+		</ion-buttons>
+
+		<ion-title>
+			{{pageTitle}}
+		</ion-title>
+
+		<app-logout-button slot="end" menu="main-menu">
+		</app-logout-button>
+
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+	<form [formGroup]="topicoForm"
+		  (submit)="onSubmit()">
+		<ion-item>
+			<ion-icon name="paper"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-input type="text"
+					   placeholder="Nome"
+					   autofocus="true"
+					   inputmode="text"
+					   formControlName="title">
+			</ion-input>
+
+		</ion-item>
+
+		<ion-item>
+			<ion-icon name="calendar"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-datetime displayFormat="DD/MM/YYYY 00:01"
+						  placeholder="INICIO"
+						  formControlName="data_inicio"
+						  min="2000-01-01"
+						  max="2030-12-31">
+			</ion-datetime>
+		</ion-item>
+
+		<ion-item>
+			<ion-icon name="calendar"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+
+			<ion-datetime displayFormat="DD/MM/YYYY 23:59"
+						  placeholder="FIM"
+						  formControlName="data_fim"
+						  min="2000-01-01"
+						  max="2030-12-31">
+			</ion-datetime>
+		</ion-item>
+
+
+
+		<ion-button expand="full"
+					type="submit"
+					[disabled]="topicoForm.invalid">
+			Salvar
+		</ion-button>
+
+	</form>
+</ion-content>

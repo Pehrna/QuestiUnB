@@ -1,0 +1,45 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/turmas/${id}/topicos">
+			</ion-back-button>
+		</ion-buttons>
+		<ion-title>
+			Lista de perguntas
+		</ion-title>
+
+		<app-logout-button slot="end" menu="main-menu">
+		</app-logout-button>
+
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+	<ion-list *ngIf="(perguntas$ | async) as perguntas">
+		<ng-container *ngIf="perguntas.length>0; else noPerguntas">
+			<app-pergunta-item *ngFor="let pergunta of perguntas"
+							   [pergunta]="pergunta"
+							   (avaliarBem)="onAvaliarBem($event)"
+							   (avaliarMal)="onAvaliarMal($event)">
+			</app-pergunta-item>
+		</ng-container>
+		<ng-template #noPerguntas>
+			Sem perguntas
+		</ng-template>
+	</ion-list>
+	<ng-container *ngIf="!usuario.professor">
+		<ion-fab vertical="bottom"
+				 horizontal="end"
+				 slot="fixed">
+
+			<ion-fab-button routerLink="./criarPergunta"
+							routerDirection="forward">
+				<ion-icon name="add">
+				</ion-icon>
+			</ion-fab-button>
+
+		</ion-fab>
+	</ng-container>
+
+</ion-content>

@@ -1,0 +1,45 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<ion-buttons slot="start">
+			<ion-back-button defaultHref="/turmas/${id}/topicos/${idd}/perguntas">
+			</ion-back-button>
+		</ion-buttons>
+		<ion-title>Criar pergunta</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content Padding>
+	<form [formGroup]="perguntaForm"
+		  (submit)="onSubmit()">
+
+		<ion-item>
+			<ion-icon icon="paper"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-input type="text"
+					   placeholder="Pergunta"
+					   autofocus="true"
+					   inputmode="text"
+					   formControlName="texto">
+			</ion-input>
+		</ion-item>
+		<ion-item>
+			<ion-icon icon="cash"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-input type="number"
+					   placeholder="Investimento"
+					   inputmode="tel"
+					   formControlName="invest">
+			</ion-input>
+		</ion-item>
+		<ion-button expand="full"
+					type="submit"
+					[disabled]="perguntaForm.invalid">
+			salvar
+
+		</ion-button>
+	</form>
+</ion-content>

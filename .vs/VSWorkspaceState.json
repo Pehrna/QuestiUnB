@@ -1,0 +1,14 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\core",
+    "\\src\\app\\topicos",
+    "\\src\\app\\topicos\\components",
+    "\\src\\app\\topicos\\components\\topico-item",
+    "\\src\\app\\topicos\\models"
+  ],
+  "SelectedNode": "\\src\\app\\topicos\\components\\topico-item\\topico-item.component.ts",
+  "PreviewInSolutionExplorer": false
+}

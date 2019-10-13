@@ -1,0 +1,21 @@
+<ion-item-sliding #sliding>
+
+	<ion-item (click)="update.emit(task)">
+		<div><h4><strong>{{task.title}}  </strong></h4> <br /> {{task.data | date:'dd/MM/yy HH:mm'}}</div>
+		<ion-toggle slot="end"
+					color="primary"
+					[checked]="task.done"
+					(ionChange)="done.emit(task)"
+					(click)="$event.stopPropagation()">
+		</ion-toggle>
+	</ion-item>
+
+	<ion-item-options side="start">
+		<ion-item-option color="danger"
+						 (click)="delete.emit(task); sliding.close()">
+			<ion-icon slot="icon-only"
+					  name="trash"></ion-icon>
+		</ion-item-option>
+	</ion-item-options>
+
+</ion-item-sliding>

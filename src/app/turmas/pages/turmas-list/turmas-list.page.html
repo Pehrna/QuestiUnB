@@ -1,0 +1,47 @@
+<ion-header>
+	<ion-toolbar color="primary">
+		<app-menu-toggle slot="start" menu="main-menu">
+		</app-menu-toggle>
+		<ion-title>
+			Lista de Turmas
+		</ion-title>
+
+		<app-logout-button slot="end" menu="main-menu">
+		</app-logout-button>
+
+	</ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+	<ion-list *ngIf="(turmas$ | async) as turmas">
+
+		<ng-container *ngIf="turmas.length > 0; else noTurmas">
+			<app-turma-item *ngFor="let turma of turmas"
+							[turma]="turma"
+							(click)="abra(turma)">
+							<!--(select)="onSelect($event)"-->
+							
+			</app-turma-item>
+		</ng-container>
+
+		<ng-template #noTurmas>
+			<ion-item lines="none">
+				Não há turmas
+			</ion-item>
+		</ng-template>
+
+	</ion-list>
+
+	<ng-container *ngIf="usuario.professor">
+		<ion-fab vertical="bottom"
+				 horizontal="end"
+				 slot="fixed">
+			<ion-fab-button routerLink="/turmas/criarTurma"
+							routerDirection="forward">
+				<ion-icon name="add"></ion-icon>
+			</ion-fab-button>
+		</ion-fab>
+	</ng-container>
+
+</ion-content>

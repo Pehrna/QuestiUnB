@@ -1,0 +1,42 @@
+<ion-grid>
+	<ion-row>
+		<ion-col>
+			<div id="textao"><h4>{{pergunta.texto}}</h4></div>
+			<ng-container *ngIf="usuario.professor">
+				Essa pergunta contém {{likes}} likes e {{dislikes}} dislikes, dum total de {{tamanho}} avaliações.
+			</ng-container>
+		</ion-col>
+	</ion-row>
+	<ion-row>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ion-col></ion-col>
+		<ng-container *ngIf="!usuario.professor && !divDisable">
+			<ion-col>
+				<ion-item (click)="avaliarBem.emit(pergunta, 'like')">
+					<ion-button>
+						<ion-icon slot="icon-only"
+								  name="thumbs-up">
+						</ion-icon>
+					</ion-button>
+				</ion-item>
+			</ion-col>
+
+			<ion-col>
+				<ion-item>
+					<ion-button color="danger" (click)="avaliarMal.emit(pergunta, 'dislike')">
+						<ion-icon slot="icon-only"
+								  name="thumbs-down">
+						</ion-icon>
+					</ion-button>
+				</ion-item>
+			</ion-col>
+		</ng-container>
+	</ion-row>
+
+</ion-grid>
