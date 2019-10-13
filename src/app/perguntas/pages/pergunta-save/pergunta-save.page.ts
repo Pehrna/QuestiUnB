@@ -27,8 +27,7 @@ export class PerguntaSavePage implements OnInit {
 		private turmaService: TurmasService,
 		private perguntaService: PerguntasService,
 		private navCtrl: NavController,
-		private activatedRoute: ActivatedRoute,
-		private overlayService: OverlayService
+		private activatedRoute: ActivatedRoute
 	) { }
 
 	async ngOnInit(): Promise<void> {
@@ -44,7 +43,7 @@ export class PerguntaSavePage implements OnInit {
 
 		await turma2.subscribe( turm => {
 			this.turma = turm;
-		} );		
+		} );
 	}
 
 

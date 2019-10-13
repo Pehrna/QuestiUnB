@@ -1,29 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.ionic.starter" version="0.3.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QuestiUnB</name>
-  
-    linguagem português
-  
-    !!!! FEITO !!!!  Implementar "minhas turmas"
-    !!!! FEITO !!!!  Implementar Senha pras turmas
-    
-    Implementar data dos topicos direito
-    
-    Implementar as edições de turma e topico 
-  
-    
-    
-    
-    
-    
-      
-    
-    
-    
-    
-    
-    
-    
     <description>An awesome Ionic/Cordova app made by OPehrna.</description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />

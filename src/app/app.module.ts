@@ -6,6 +6,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { TurmaLoginPageModule } from './turmas/pages/turma-login/turma-login.module';
+import { TurmaComponentsModule } from './turmas/components/turmacomponents.module';
+
 
 
 @NgModule( {
@@ -19,6 +21,7 @@ import { TurmaLoginPageModule } from './turmas/pages/turma-login/turma-login.mod
 		AngularFireDatabaseModule,
 		AngularFireAuthModule,
 		TurmaLoginPageModule,
+		TurmaComponentsModule
 
 	],
 	bootstrap: [

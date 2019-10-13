@@ -8,7 +8,7 @@ import { LoginService } from 'src/app/core/services/service.service';
 
 @Component( {
 	selector: 'app-pergunta-item',
-	template: '<button (click)="sendMessage()">Send Message</button>',
+	//template: '<button (click)="sendMessage()">Send Message</button>',
 	templateUrl: './pergunta-item.component.html',
 	styleUrls: ['./pergunta-item.component.scss'],
 } )

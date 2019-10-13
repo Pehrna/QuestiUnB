@@ -7,7 +7,7 @@ import { LoginService } from 'src/app/core/services/service.service';
 
 @Component( {
 	selector: 'app-topico-item',
-	template: '<button (click)="sendMessage()">Send Message</button>',
+	//template: '<button (click)="sendMessage()">Send Message</button>',
 	templateUrl: './topico-item.component.html',
 	styleUrls: ['./topico-item.component.scss'],
 } )
@@ -51,22 +51,22 @@ export class TopicoItemComponent {
 		var monthHJ = d.getUTCMonth() + 1;
 		var dayHJ = d.getUTCDate();
 
-		console.log( "Nome: ", this.topico.title );
+		//console.log( "Nome: ", this.topico.title );
 		if ( year < yearHJ ) {
-			console.log( "Ano maior entra aqui" );
+			//console.log( "Ano maior entra aqui" );
 			//Chama função pra esse topico
 		} else {
-			console.log( "Ano menor/igual, vai testar mês" );
+			//console.log( "Ano menor/igual, vai testar mês" );
 			if ( month < monthHJ ) {
-				console.log( "Mês maior entra aqui" );
+				//console.log( "Mês maior entra aqui" );
 				//Chama função pra esse topico
 			} else {
-				console.log( "Mês menor/igual, vai testar o dia" );
+				//console.log( "Mês menor/igual, vai testar o dia" );
 				if ( day < dayHJ ) {
-					console.log( "Dia maior entra aqui" );
+					//console.log( "Dia maior entra aqui" );
 					//Chama função pra esse topico
 				} else {
-					console.log( "Dia menor/igual, va passar reto" );
+					//console.log( "Dia menor/igual, va passar reto" );
 				}
 			}
 		}

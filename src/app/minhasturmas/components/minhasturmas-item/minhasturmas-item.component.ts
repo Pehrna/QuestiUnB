@@ -7,7 +7,7 @@ import { LoginService } from 'src/app/core/services/service.service';
 
 @Component( {
 	selector: 'app-minhasturmas-item',
-	template: '<button (click)="sendMessage()">Send Message</button>',
+	//template: '<button (click)="sendMessage()">Send Message</button>',
 	templateUrl: './minhasturmas-item.component.html',
 	styleUrls: ['./minhasturmas-item.component.scss'],
 } )

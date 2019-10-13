@@ -4,12 +4,11 @@ import { Dado } from 'src/app/auth/pages/auth.model';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginService } from 'src/app/core/services/service.service';
-import { NavController } from '@ionic/angular';
 
 
 @Component( {
 	selector: 'app-turma-item',
-	template: '<button (click)="sendMessage()">Send Message</button>',
+	//template: '<button (click)="sendMessage()">Send Message</button>',
 	templateUrl: './turma-item.component.html',
 	styleUrls: ['./turma-item.component.scss'],
 } )

@@ -3,7 +3,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TopicosService } from '../../services/topicos.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
-import { OverlayService } from 'src/app/core/services/overlay.service';
 
 
 @Component( {
