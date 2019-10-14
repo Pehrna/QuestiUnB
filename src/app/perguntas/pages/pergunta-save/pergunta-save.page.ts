@@ -4,8 +4,7 @@ import { PerguntasService } from '../../services/perguntas.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { TurmasService } from 'src/app/turmas/services/turmas.service';
-import { Inscrito, Turma } from 'src/app/turmas/Models/Turmas.models';
-import { OverlayService } from 'src/app/core/services/overlay.service';
+import { Turma } from 'src/app/turmas/Models/Turmas.models';
 import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component( {
