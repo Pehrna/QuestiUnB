@@ -26,7 +26,7 @@ export class LoginPage implements OnInit {
 	configs = {
 		isSignIn: true,
 		action: 'Login',
-		actionChange: 'Create account'
+		actionChange: 'Criar conta'
 	};
 
 
@@ -66,8 +66,8 @@ export class LoginPage implements OnInit {
 	changeAuthAction(): void {
 		this.configs.isSignIn = !this.configs.isSignIn;
 		const { isSignIn } = this.configs;
-		this.configs.action = isSignIn ? 'Login' : 'Sign Up';
-		this.configs.actionChange = isSignIn ? 'Criar conta' : 'Já tenho conta'
+		this.configs.action = isSignIn ? 'Login' : 'Cadastrar';
+		this.configs.actionChange = isSignIn ? 'Criar conta' : 'Ja tenho conta'
 		!isSignIn ? this.authForm.addControl( 'name', this.nameControl ) : this.authForm.removeControl( 'name' );
 		!isSignIn ? this.authForm.addControl( 'matricula', this.matriculaControl ) : this.authForm.removeControl( 'matricula' );
 	}

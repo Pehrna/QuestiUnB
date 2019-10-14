@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
@@ -7,7 +7,11 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { TurmaLoginPageModule } from './turmas/pages/turma-login/turma-login.module';
 import { TurmaComponentsModule } from './turmas/components/turmacomponents.module';
+import { registerLocaleData } from '@angular/common';
+import local from '@angular/common/locales/pt';
+import localExtra from '@angular/common/locales/extra/pt';
 
+registerLocaleData( local, 'pt', localExtra );
 
 
 @NgModule( {
@@ -24,9 +28,16 @@ import { TurmaComponentsModule } from './turmas/components/turmacomponents.modul
 		TurmaComponentsModule
 
 	],
+	providers: [
+		{
+			provide: LOCALE_ID,
+			useValue: 'pt'
+		}
+	],
 	bootstrap: [
 		AppComponent
-	]
+	],
+
 } )
 export class AppModule { }
 
