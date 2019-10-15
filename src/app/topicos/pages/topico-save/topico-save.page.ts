@@ -18,7 +18,8 @@ export class TopicoSavePage implements OnInit {
 
 	@Output() messageEvent = new EventEmitter<string>();
 
-	constructor( private fb: FormBuilder,
+	constructor(
+		private fb: FormBuilder,
 		private topicoService: TopicosService,
 		private navCtrl: NavController,
 		private activatedRoute: ActivatedRoute
@@ -27,6 +28,7 @@ export class TopicoSavePage implements OnInit {
 	ngOnInit() {
 		this.createForm();
 		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
+
 
 	}
 
@@ -37,7 +39,8 @@ export class TopicoSavePage implements OnInit {
 			data_fim: [''],
 			data_criada: Date(),
 			id_turma: [this.id_turma],
-			encerrado: false
+			encerrado: false,
+			quantidade: ['']
 		} );
 	}
 

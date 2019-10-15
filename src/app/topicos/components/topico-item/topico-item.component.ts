@@ -75,31 +75,31 @@ export class TopicoItemComponent {
 				//Chama função pra esse topico
 				await turma2.subscribe( turm => {
 					this.turma = turm;
-					console.log( "Ano maior: ", this.turma );
+					//console.log( "Ano maior: ", this.turma );
 					this.restituicao( this.turma );
 				} );
 			} else {
 				//console.log( "Ano menor/igual, vai testar mês" );
-				if ( month < monthHJ ) {
+				if ( month < monthHJ && year == yearHJ ) {
 					//console.log( "Mês maior entra aqui" );
 					//Chama função pra esse topico
 					await turma2.subscribe( turm => {
 						this.turma = turm;
-						console.log( "Mes maior: ", this.turma );
+						//console.log( "Mes maior: ", this.turma );
 						this.restituicao( this.turma );
 					} );
 				} else {
 					//console.log( "Mês menor/igual, vai testar o dia" );
-					if ( day < dayHJ ) {
+					if ( day < dayHJ && month == monthHJ ) {
 						//console.log( "Dia maior entra aqui" );
 						//Chama função pra esse topico
 						await turma2.subscribe( turm => {
 							this.turma = turm;
-							console.log( "Dia maior: ", this.turma );
+							//console.log( "Dia maior: ", this.turma );
 							this.restituicao( this.turma );
 						} );
 					} else {
-						//console.log( "Dia menor/igual, va passar reto" );
+						//console.log( "Dia menor/igual, vai passar reto" );
 					}
 				}
 			}
@@ -112,33 +112,23 @@ export class TopicoItemComponent {
 	async restituicao( turma: Turma ) {
 
 		if ( !this.topico.encerrado ) {
-			console.log( "Não tava encerrado!" );
 			this.topico.encerrado = true;
 			this.topicoService.update( this.topico );
 
 			try {
 
-				for ( var i = 0; i < turma.lista.length; i++ ) {
+				for ( var i = 0; i < turma.lista.length; i++ ) {	
 
-					console.log( "Aluno: ", turma.lista[i].id_aluno );
-					console.log( "Moedas: ", turma.lista[i].moedas );
-					console.log( "Posicao: ", turma.lista[i].posicao );
-					console.log( "Esta encerrado? ", this.topico.encerrado );
-					console.log(this.topico.title);
-					//console.log();
-					//console.log();
-
-					const moeda = turma.lista[i].moedas + 200;
+					const moeda = turma.lista[i].moedas + 2;
 					turma.lista[i].moedas = moeda;
 					this.turmaService.updateTurma( turma );
-					console.log( "Entra?" );
 
 				}
 			} catch ( error ) {
 				console.log( error );
 			}
 		} else {
-			console.log( "Ja tava encerrado!" );
+			//console.log( "Ja tava encerrado!" );
 		}
 
 	}

@@ -6,5 +6,6 @@ export interface Topico {
 	data_criada: Date;
 	id_turma: string;
 	encerrado: boolean;
+	quantidade: number;
 
 }

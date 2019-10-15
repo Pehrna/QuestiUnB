@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Turma, Inscrito } from 'src/app/turmas/Models/Turmas.models';
 import { TurmasService } from '../../services/turmas.service';
-import { NavController, PopoverController, NavParams } from '@ionic/angular';
+import { NavController, PopoverController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Dado } from 'src/app/auth//pages/auth.model';
 import { LoginService } from 'src/app/core/services/service.service';
@@ -99,7 +99,7 @@ export class TurmasListPage implements OnInit {
 			try {
 				this.invite = turma.lista;
 				if ( this.invite == null ) {
-					this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: 0 }];
+					this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: 0, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico: [] }];
 					const turma_Inscricao = { ...turma, lista: this.invite };
 					await this.turmaService.updateTurma( turma_Inscricao );
 					this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
@@ -113,7 +113,7 @@ export class TurmasListPage implements OnInit {
 					}
 				}
 
-				this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: turma.lista.length } );
+				this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: turma.lista.length, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico: []  } );
 				const turma_Inscricao = { ...turma, lista: this.invite };
 				await this.turmaService.updateTurma( turma_Inscricao );
 				this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
@@ -130,37 +130,37 @@ export class TurmasListPage implements OnInit {
 		
 		} else {
 			await this.overlayService.toast( {
-				message: 'Essa senha está incorreta!'
+				message: 'Essa senha esta incorreta!'
 			} );
 		}
 	}
 
-	async agoravai( turma: Turma ): Promise<void> {
-		this.invite = turma.lista;
-		if ( this.invite == null ) {
-			this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: 0 }];
-			const turma_Inscricao = { ...turma, lista: this.invite };
-			await this.turmaService.updateTurma( turma_Inscricao );
-			this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
-			return;
-		}
+	//async agoravai( turma: Turma ): Promise<void> {
+	//	this.invite = turma.lista;
+	//	if ( this.invite == null ) {
+	//		this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: 0, reputacao_compartilhador: 0, reputacao_avaliador: 0  }];
+	//		const turma_Inscricao = { ...turma, lista: this.invite };
+	//		await this.turmaService.updateTurma( turma_Inscricao );
+	//		this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
+	//		return;
+	//	}
 
-		for ( var i = 0; i < this.invite.length; i++ ) {
-			if ( this.invite[i].id_aluno == this.user.uid ) {
-				this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
-				return;
-			}
-		}
+	//	for ( var i = 0; i < this.invite.length; i++ ) {
+	//		if ( this.invite[i].id_aluno == this.user.uid ) {
+	//			this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
+	//			return;
+	//		}
+	//	}
 
-		this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: turma.lista.length } );
-		const turma_Inscricao = { ...turma, lista: this.invite };
-		await this.turmaService.updateTurma( turma_Inscricao );
-		this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
-	}
+	//	this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: turma.lista.length, reputacao_compartilhador: 0, reputacao_avaliador: 0  } );
+	//	const turma_Inscricao = { ...turma, lista: this.invite };
+	//	await this.turmaService.updateTurma( turma_Inscricao );
+	//	this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
+	//}
 
-	onUpdate( turma: Turma ): void {
-		var b = '/turmas/editarTurma/' + turma.id;
-		this.navCtrl.navigateForward( b );
+	//onUpdate( turma: Turma ): void {
+	//	var b = '/turmas/editarTurma/' + turma.id;
+	//	this.navCtrl.navigateForward( b );
 
-	}
+	//}
 }

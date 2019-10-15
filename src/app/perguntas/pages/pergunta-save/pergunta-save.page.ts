@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TurmasService } from 'src/app/turmas/services/turmas.service';
 import { Turma } from 'src/app/turmas/Models/Turmas.models';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 @Component( {
 	selector: 'app-pergunta-save',
@@ -26,7 +27,9 @@ export class PerguntaSavePage implements OnInit {
 		private turmaService: TurmasService,
 		private perguntaService: PerguntasService,
 		private navCtrl: NavController,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private overlayService: OverlayService
+
 	) { }
 
 	async ngOnInit(): Promise<void> {
@@ -61,15 +64,23 @@ export class PerguntaSavePage implements OnInit {
 		this.perguntaForm.value.invest ? null : this.perguntaForm.value.invest = 1;
 		try {
 			this.perguntaForm.value.dono = this.user.uid;
-			const pergunta = await this.perguntaService.create_pergunta( this.perguntaForm.value );
 
 			for ( var i = 0; i < this.turma.lista.length; i++ ) {
 				if ( this.turma.lista[i].id_aluno == this.user.uid ) {
+					
 					const moeda = this.turma.lista[i].moedas - this.perguntaForm.value.invest
+					if ( moeda < 0 ) {
+						await this.overlayService.toast( {
+							message: 'Limite de moedas excedido!'
+						} );
+						return;
+					}
 					this.turma.lista[i].moedas = moeda;
 					this.turmaService.updateTurma( this.turma );
+
 				}
 			}
+			const pergunta = await this.perguntaService.create_pergunta( this.perguntaForm.value );
 
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos/' + this.id_topico + '/perguntas' );
 		}

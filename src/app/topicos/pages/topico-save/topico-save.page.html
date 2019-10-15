@@ -6,7 +6,7 @@
 			</ion-back-button>
 		</ion-buttons>
 
-		<ion-title> Criar Tópico	</ion-title>
+		<ion-title> Criar Topico	</ion-title>
 
 		<app-logout-button slot="end" menu="main-menu">
 		</app-logout-button>
@@ -27,6 +27,19 @@
 					   autofocus="true"
 					   inputmode="text"
 					   formControlName="title">
+			</ion-input>
+
+		</ion-item>
+
+		<ion-item>
+			<ion-icon name="paper"
+					  slot="start"
+					  color="primary">
+			</ion-icon>
+			<ion-input type="text"
+					   placeholder="Quantidade de perguntas"
+					   inputmode="number"
+					   formControlName="quantidade">
 			</ion-input>
 
 		</ion-item>

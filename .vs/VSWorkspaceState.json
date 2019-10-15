@@ -2,15 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app",
-    "\\src\\app\\minhasturmas\\components",
-    "\\src\\app\\minhasturmas\\components\\minhasturmas-item",
-    "\\src\\app\\tasks\\Components",
-    "\\src\\app\\tasks\\Components\\task-item",
-    "\\src\\app\\topicos",
-    "\\src\\app\\topicos\\components",
-    "\\src\\app\\topicos\\components\\topico-item"
+    "\\src\\app"
   ],
-  "SelectedNode": "\\src\\app\\topicos\\components\\topico-item\\topico-item.component.html",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }
