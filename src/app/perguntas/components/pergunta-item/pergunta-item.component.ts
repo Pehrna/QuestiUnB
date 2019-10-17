@@ -49,9 +49,7 @@ export class PerguntaItemComponent {
 			this.tamanho = this.pergunta.avaliacao.length;
 		}
 		for ( var i = 0; i < this.tamanho; i++ ) {
-
 			if ( this.pergunta.avaliacao[i].dono == this.user.uid ) {
-
 				this.divDisable = true;
 			}
 		}

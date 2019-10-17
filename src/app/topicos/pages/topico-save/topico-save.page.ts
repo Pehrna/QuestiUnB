@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TopicosService } from '../../services/topicos.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 
 @Component( {
@@ -22,7 +23,8 @@ export class TopicoSavePage implements OnInit {
 		private fb: FormBuilder,
 		private topicoService: TopicosService,
 		private navCtrl: NavController,
-		private activatedRoute: ActivatedRoute
+		private activatedRoute: ActivatedRoute,
+		private overlayService: OverlayService 
 	) { }
 
 	ngOnInit() {
@@ -49,7 +51,11 @@ export class TopicoSavePage implements OnInit {
 	}
 
 	async onSubmit(): Promise<void> {
+		const loading = await this.overlayService.loading( {
+			message: 'Salvando...'
+		}
 
+		);
 		try {
 			var b = this.topicoForm.value.data_inicio;
 			b = b.substring( 0, 11 ) + '00:01:00.000-03:00';
@@ -66,6 +72,8 @@ export class TopicoSavePage implements OnInit {
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos' );
 		} catch ( error ) {
 			console.log( 'Erro: ', error )
+		} finally {
+			loading.dismiss();
 		}
 	}
 }

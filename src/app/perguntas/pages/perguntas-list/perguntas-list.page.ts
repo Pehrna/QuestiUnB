@@ -155,26 +155,43 @@ export class PerguntasListPage implements OnInit {
 		var tam2 = 0;
 
 		for ( var i = 0; i < pergunta.length; i++ ) {
-			if ( pergunta[i].dono == dono ) {
+			console.log( "for da lista de perguntas" );
+			if ( pergunta[i].dono == dono && pergunta[i].avaliacao != null ) {
+				console.log("Entrou primeiro If");
 				cont++;
 				tam2 = 0;
 				if ( pergunta[i].avaliacao == null ) {
 					tam1 = 0;
+					console.log( "If de avaliaçaõ nula" );
 				} else {
 					tam1 = pergunta[i].avaliacao.length;
+					console.log( "Else de avaliaçaõ nula" );
 				}
 				for ( var j = 0; j < tam1; j++ ) {
+					console.log( "for para lista de avaliacao" );
 					if ( pergunta[i].avaliacao[j].like == 'Like' ) {
 						tam2 = tam2 + 1;
+						console.log( "If de likes" );
 					} else {
-						tam2 = tam2 - 1;
+						//tam2 = tam2 - 1;
 					}
 				}
+				if ( tam1 == 0 ) {
+					tam1 = 1;
+					console.log( "If de tamanho1" );
+				}
+				tam2 = tam2 / tam1;
+				console.log( "tamanho2 incrementa" );
+				console.log( tam2 );
+				cont2 = cont2 + tam2;
+				console.log( "Cont2 incrementa" );
 			}
-			cont2 = cont2 + tam2;
+			
 		}
+
 		cont3 = cont2 / cont;
-	
+		console.log( "solta cont3: ", cont3 );
+
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				this.turma.lista[i].reputacao_compartilhador = cont3;

@@ -61,13 +61,20 @@ export class PerguntaSavePage implements OnInit {
 
 
 	async onSubmit(): Promise<void> {
+
+		const loading = await this.overlayService.loading( {
+			message: 'Salvando...'
+		}
+
+		);
+
 		this.perguntaForm.value.invest ? null : this.perguntaForm.value.invest = 1;
 		try {
 			this.perguntaForm.value.dono = this.user.uid;
 
 			for ( var i = 0; i < this.turma.lista.length; i++ ) {
 				if ( this.turma.lista[i].id_aluno == this.user.uid ) {
-					
+
 					const moeda = this.turma.lista[i].moedas - this.perguntaForm.value.invest
 					if ( moeda < 0 ) {
 						await this.overlayService.toast( {
@@ -86,6 +93,8 @@ export class PerguntaSavePage implements OnInit {
 		}
 		catch ( error ) {
 			console.log( error );
+		} finally {
+			loading.dismiss();
 		}
 	}
 
