@@ -2,7 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\app"
+    "\\src\\app",
+    "\\src\\app\\perguntas",
+    "\\src\\app\\perguntas\\pages",
+    "\\src\\app\\perguntas\\pages\\perguntas-list"
   ],
   "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false

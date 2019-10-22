@@ -148,55 +148,140 @@ export class PerguntasListPage implements OnInit {
 	}
 
 	async media( pergunta: Pergunta[], dono: string ) {
-		var cont = 0;
-		var cont2 = 0;
-		var cont3 = 0;
+		var qtd_perg = 0;
+		var soma_das_medias = 0;
+		var media_total = 0;
 		var tam1 = 0;
-		var tam2 = 0;
+		var qtd_like = 0;
+		var qtd_like_media = 0;
+
 
 		for ( var i = 0; i < pergunta.length; i++ ) {
-			console.log( "for da lista de perguntas" );
 			if ( pergunta[i].dono == dono && pergunta[i].avaliacao != null ) {
-				console.log("Entrou primeiro If");
-				cont++;
-				tam2 = 0;
+				qtd_perg++;
+				qtd_like = 0;
 				if ( pergunta[i].avaliacao == null ) {
 					tam1 = 0;
-					console.log( "If de avaliaçaõ nula" );
 				} else {
 					tam1 = pergunta[i].avaliacao.length;
-					console.log( "Else de avaliaçaõ nula" );
 				}
 				for ( var j = 0; j < tam1; j++ ) {
-					console.log( "for para lista de avaliacao" );
 					if ( pergunta[i].avaliacao[j].like == 'Like' ) {
-						tam2 = tam2 + 1;
-						console.log( "If de likes" );
-					} else {
-						//tam2 = tam2 - 1;
+						qtd_like = qtd_like + 1;
 					}
 				}
 				if ( tam1 == 0 ) {
 					tam1 = 1;
-					console.log( "If de tamanho1" );
 				}
-				tam2 = tam2 / tam1;
-				console.log( "tamanho2 incrementa" );
-				console.log( tam2 );
-				cont2 = cont2 + tam2;
-				console.log( "Cont2 incrementa" );
+				qtd_like_media = qtd_like / tam1;
+				soma_das_medias = soma_das_medias + qtd_like_media;
 			}
-			
 		}
 
-		cont3 = cont2 / cont;
-		console.log( "solta cont3: ", cont3 );
+		media_total = soma_das_medias / qtd_perg;
 
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
-				this.turma.lista[i].reputacao_compartilhador = cont3;
+				this.turma.lista[i].reputacao_compartilhador = media_total;
 				await this.turmaService.updateTurma( this.turma );
 			}
 		}
+		var flag_aux = false;
+		var nota = 0;
+		var r1 = 0;
+		var r2 = 0;
+		console.log( "Aqui entra nos alunos, percorre a lista de alunos" );
+		for ( var i = 0; i < this.turma.lista.length; i++ ) {
+			qtd_perg = 0;
+			soma_das_medias = 0;
+			media_total = 0;
+			tam1 = 0;
+			qtd_like = 0;
+			qtd_like_media = 0;
+			flag_aux = false;
+			nota = 0;
+			r1 = 0;
+			r2 = 0;
+			console.log( "Aluno ", i + 1, ": ", this.turma.lista[i].id_aluno );
+			console.log( "Esse é um aluno. Pra esse aluno, vai percorrer toda a lista de perguntas atras das avaliações" );
+			for ( var j = 0; j < pergunta.length; j++ ) {
+				console.log( "Pergunta ", j + 1, ": ", pergunta[j].texto );
+				console.log( "Essa é uma pergunta" );
+				flag_aux = false;
+				console.log( "A flag_aux recebe false, pois não sabemos ainda se ha avaliações" );
+				qtd_like = 0;
+				r1 = 0;
+				console.log( "Qtd_likes recebe 0 pois começamos agora a coher informações dos likes dessa pergunta" );
+				if ( pergunta[j].avaliacao == null ) {
+					tam1 = 0;
+				} else {
+					tam1 = pergunta[j].avaliacao.length;
+				}
+				console.log( "Caso essa pergunta não tenha avaliações, tam1 recebe 0, caso contrario ela recebe o tamanho da lista de avaliações" );
+				for ( var k = 0; k < tam1; k++ ) {
+					console.log( "Se tem avaliações, entra aqui. " );
+
+					console.log( "Avaliacao ", k + 1, ": ", pergunta[j].avaliacao[k].like );
+					if ( pergunta[j].avaliacao[k].like == 'Like' ) {
+						console.log( "Aqui começa a contagem de likes dessa perguntana posicao [j]. " );
+						qtd_like = qtd_like + 1;
+					}
+					if ( pergunta[j].avaliacao[k].dono == this.turma.lista[i].id_aluno ) {
+						console.log( "Mesmo ID dono e do aluno testado. A flag aux vira true, a qtd de perg ++, e se for um like, qtd_like++" );
+						flag_aux = true;
+						qtd_perg++;
+						if ( pergunta[j].avaliacao[k].like == 'Like' ) {
+							nota++;
+						}
+					}
+				}
+				if ( tam1 == 0 ) {
+					console.log( "Caso tam1 seja 0 (Ou seja, nao haja avaliaçoes), ele recebe 1 pra efeitos de calculo" );
+					qtd_like_media = 0.5;
+				} else {
+					qtd_like_media = qtd_like / tam1;
+				}
+				console.log( "Qtd_like: ", qtd_like );
+				console.log( "tam1: ", tam1 );
+				console.log( "Qtd_like_media: ", qtd_like_media );
+				console.log( "Qtd like media recebe a media da pergunta: quantas avaliações boas ela tem de acordo com a quantidade de avaliações" );
+				if ( flag_aux ) {
+					console.log( "Se flag_aux for true, o aluno avaliou essa e vai entrar pra uma conta envolvendo RI" );
+					r1 = nota - qtd_like_media;
+					console.log( "Nota: ", nota );
+					console.log( "Qtd_like_media: ", qtd_like_media );
+					console.log( "R1: ", r1 );
+					if ( r1 < 0 ) {
+						console.log( "Se for negativo" );
+						r1 = r1 * -1;
+					}
+					if ( r1 < 0.1 ) {
+						console.log( "Se for menor" );
+						r1 = 0.1;
+					}
+					console.log( "RI so pode estar entre 0,1 e 1" );
+
+				}
+				console.log( "R2 fica sendo um agregador de RIs" );
+				console.log( "R2 antes: ", r2 );
+				console.log( "R1: ", r1 );
+				console.log( "R2 depois: ", r1 + r2 );
+				r2 = r2 + r1;
+			}
+			if ( r2 == 0 ) {
+				r2 = 1;
+			}
+			console.log( "Fora do for das perguntas, quando ele percorreu todas elas, faz a media" );
+			media_total = qtd_perg / r2;
+			console.log( "qtd_perg: ", qtd_perg );
+			console.log( "R2: ", r2 );
+			console.log( "media total: ", media_total );
+
+			this.turma.lista[i].reputacao_avaliador = media_total;
+			await this.turmaService.updateTurma( this.turma );
+		}
+
+
+
 	}
 }
