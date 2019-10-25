@@ -42,7 +42,9 @@ export class TopicoSavePage implements OnInit {
 			data_criada: Date(),
 			id_turma: [this.id_turma],
 			encerrado: false,
-			quantidade: ['']
+			quantidade: [''],
+			peso_pergunta: [''],
+			peso_avaliacao: ['']
 		} );
 	}
 

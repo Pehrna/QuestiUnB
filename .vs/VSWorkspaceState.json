@@ -5,8 +5,12 @@
     "\\src\\app",
     "\\src\\app\\perguntas",
     "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\perguntas-list"
+    "\\src\\app\\perguntas\\pages\\pergunta-save",
+    "\\src\\app\\topicos",
+    "\\src\\app\\topicos\\models",
+    "\\src\\app\\topicos\\pages",
+    "\\src\\app\\topicos\\services"
   ],
-  "SelectedNode": "\\config.xml",
+  "SelectedNode": "\\src\\app\\topicos\\services\\topicos.service.ts",
   "PreviewInSolutionExplorer": false
 }

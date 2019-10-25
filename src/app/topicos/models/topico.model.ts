@@ -7,5 +7,7 @@ export interface Topico {
 	id_turma: string;
 	encerrado: boolean;
 	quantidade: number;
+	peso_pergunta: number;
+	peso_avaliacao: number;
 
 }
