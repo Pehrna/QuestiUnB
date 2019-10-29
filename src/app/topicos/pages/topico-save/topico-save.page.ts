@@ -4,6 +4,8 @@ import { TopicosService } from '../../services/topicos.service';
 import { NavController } from '@ionic/angular';
 import { ActivatedRoute } from '@angular/router';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { Turma, Questoes } from 'src/app/turmas/Models/Turmas.models';
+import { TurmasService } from 'src/app/turmas/services/turmas.service';
 
 
 @Component( {
@@ -16,20 +18,31 @@ export class TopicoSavePage implements OnInit {
 	topicoForm: FormGroup;
 	id_turma: string;
 	message: string;
+	turma: Turma;
+	aux = 0;
+	aux2 = 0;
+
+	questao: Questoes[];
 
 	@Output() messageEvent = new EventEmitter<string>();
 
 	constructor(
 		private fb: FormBuilder,
 		private topicoService: TopicosService,
-		private navCtrl: NavController,
+		private turmaService: TurmasService,
 		private activatedRoute: ActivatedRoute,
-		private overlayService: OverlayService 
+		private navCtrl: NavController,
+		private overlayService: OverlayService
 	) { }
 
-	ngOnInit() {
+	async ngOnInit() {
 		this.createForm();
 		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
+		const turma2 = await this.turmaService.getTurma( this.id_turma );
+
+		await turma2.subscribe( turm => {
+			this.turma = turm;
+		} );
 
 
 	}
@@ -70,7 +83,42 @@ export class TopicoSavePage implements OnInit {
 			this.topicoForm.value.id_turma = this.id_turma;
 
 			await this.topicoService.id_Turma( this.id_turma );
+			if ( this.turma.lista == null ) {
+				await this.overlayService.toast( {
+					message: 'Nao existe alunos nessa turma!'
+				} );
+				return;
+			}
+
+			for ( var i = 0; i < this.turma.lista.length; i++ ) {
+				this.aux = this.aux + this.turma.lista[i].reputacao_compartilhador;
+			}
+			console.log( "This.aux: ", this.aux );
+			for ( var i = 0; i < this.turma.lista.length; i++ ) {
+				this.questao = this.turma.lista[i].lista_topico;
+				console.log( "Aqui aparece: ", i, " que tem lista: ", this.questao );
+				if ( this.aux != 0 ) {
+					this.aux2 = this.topicoForm.value.quantidade * ( this.turma.lista[i].reputacao_compartilhador / this.aux );
+				} else {
+					this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
+				}
+				console.log( "Aqui aux2: ", this.aux2 );
+				this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2 } );
+				this.turma.lista[i].lista_topico = this.questao;
+				console.log( "This.turma.list[i].lista_topico: ", this.turma.lista[i].lista_topico );
+				console.log( "this.turma: ", this.turma );
+				const turma_aux = this.turma;
+				//const turma_aux = { ...this.turma, lista[i].lista_topico: this.questao };
+				console.log( "Turma_aux: ", turma_aux );
+				await this.turmaService.updateTurma( turma_aux );
+
+				//const turma_Inscricao = { ...turma, lista: this.invite };
+				//await this.turmaService.updateTurma( turma_Inscricao );
+			}
+
 			const topico2 = await this.topicoService.create_topico( this.topicoForm.value );
+
+
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos' );
 		} catch ( error ) {
 			console.log( 'Erro: ', error )

@@ -20,7 +20,7 @@ export interface Inscrito {
 export interface Questoes {
 	id_turma: string;
 	id_aluno: string;
-	id_topico: string;
+	//id_topico: string;
 	nome_topico: string;
 	qtd_questoes: number;
 	qtd_esperada: number;
