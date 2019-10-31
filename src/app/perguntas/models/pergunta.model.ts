@@ -5,6 +5,7 @@ export interface Pergunta {
 	avaliacao: Nota[];
 	data_criacao: Date;
 	dono: string;
+	excedente: boolean;
 
 
 

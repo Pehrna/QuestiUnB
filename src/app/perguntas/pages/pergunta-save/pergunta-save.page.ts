@@ -55,7 +55,8 @@ export class PerguntaSavePage implements OnInit {
 			invest: [],
 			avaliacao: [],
 			data_criacao: Date(),
-			dono: null
+			dono: null,
+			excedente: false
 		} );
 	}
 
@@ -83,10 +84,12 @@ export class PerguntaSavePage implements OnInit {
 						return;
 					}
 					this.turma.lista[i].moedas = moeda;
+					this.turma.lista[i].lista_topico[this.turma.lista[i].posicao].qtd_questoes++;
 					this.turmaService.updateTurma( this.turma );
-
+					if ( this.turma.lista )
 				}
 			}
+			
 			const pergunta = await this.perguntaService.create_pergunta( this.perguntaForm.value );
 
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos/' + this.id_topico + '/perguntas' );

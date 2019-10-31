@@ -10,6 +10,8 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { OverlayService } from 'src/app/core/services/overlay.service';
 import { Turma } from 'src/app/turmas/Models/Turmas.models';
 import { TurmasService } from 'src/app/turmas/services/turmas.service';
+import { Topico } from 'src/app/topicos/models/topico.model';
+import { TopicosService } from 'src/app/topicos/services/topicos.service';
 
 @Component( {
 	selector: 'app-perguntas-list',
@@ -28,6 +30,8 @@ export class PerguntasListPage implements OnInit {
 	user: firebase.User;
 	usuario: Dado = { id: '', nome: '', matricula: '', email: '', professor: false };
 	usuario$: Observable<Dado>;
+	topico$: Observable<Topico[]>;
+	topico: Topico[];
 	tamanho: number = 0;
 
 	constructor(
@@ -37,7 +41,8 @@ export class PerguntasListPage implements OnInit {
 		private serviceService: LoginService,
 		protected db: AngularFirestore,
 		private overlayService: OverlayService,
-		private turmaService: TurmasService
+		private turmaService: TurmasService,
+		private topicoService: TopicosService
 	) { }
 
 	async ngOnInit() {
@@ -53,6 +58,10 @@ export class PerguntasListPage implements OnInit {
 			this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
 			await this.perguntaService.id_Rota( this.id_turma, this.id_topico );
 			this.perguntas$ = this.perguntaService.getAll();
+			this.topico$ = this.topicoService.getAll();
+			this.topico$.subscribe( topi => {
+				this.topico = topi;
+			} );
 			this.usuario$ = this.serviceService.get( this.user.uid );
 			this.usuario$.subscribe( usu => {
 				this.usuario = usu;
@@ -68,9 +77,7 @@ export class PerguntasListPage implements OnInit {
 			} )
 			await this.perguntas$.subscribe( pergu => {
 				this.perg = pergu;
-				//this.media( this.perg, this.usuario.id );
-			} );
-			//this.media( this.perg );
+			} );			
 		} catch ( error ) {
 			console.log( 'Erro ao criar tarefa: ', error )
 			await this.overlayService.toast( {

@@ -4,13 +4,13 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\perguntas",
+    "\\src\\app\\perguntas\\models",
     "\\src\\app\\perguntas\\pages",
     "\\src\\app\\perguntas\\pages\\pergunta-save",
-    "\\src\\app\\topicos",
-    "\\src\\app\\topicos\\models",
-    "\\src\\app\\topicos\\pages",
-    "\\src\\app\\topicos\\services"
+    "\\src\\app\\perguntas\\pages\\perguntas-list",
+    "\\src\\app\\turmas",
+    "\\src\\app\\turmas\\Models"
   ],
-  "SelectedNode": "\\src\\app\\topicos\\services\\topicos.service.ts",
+  "SelectedNode": "\\src\\app\\perguntas\\models\\pergunta.model.ts",
   "PreviewInSolutionExplorer": false
 }

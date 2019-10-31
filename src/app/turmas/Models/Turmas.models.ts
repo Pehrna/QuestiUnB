@@ -7,9 +7,9 @@ export interface Turma {
 }
 
 export interface Inscrito {
-	//id: string;
 	id_turma: string;
 	id_aluno: string;
+	nota: number;
 	moedas: number;
 	posicao: number;
 	reputacao_compartilhador: number;
@@ -20,8 +20,8 @@ export interface Inscrito {
 export interface Questoes {
 	id_turma: string;
 	id_aluno: string;
-	//id_topico: string;
 	nome_topico: string;
 	qtd_questoes: number;
 	qtd_esperada: number;
+	fator_recompensa: number;
 }
