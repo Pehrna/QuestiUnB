@@ -100,7 +100,7 @@ export class TopicoSavePage implements OnInit {
 				} else {
 					this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
 				}
-				this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2, fator_recompensa: 1 } );
+				this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2, fator_recompensa: 1, nota_avaliador: 0, nota_compartilhador:0 } );
 				this.turma.lista[i].lista_topico = this.questao;
 				const turma_aux = this.turma;
 				await this.turmaService.updateTurma( turma_aux );

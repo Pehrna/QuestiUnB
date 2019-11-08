@@ -24,4 +24,6 @@ export interface Questoes {
 	qtd_questoes: number;
 	qtd_esperada: number;
 	fator_recompensa: number;
+	nota_compartilhador: number;
+	nota_avaliador: number;
 }

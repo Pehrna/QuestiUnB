@@ -7,6 +7,8 @@ import { TurmasService } from 'src/app/turmas/services/turmas.service';
 import { Turma } from 'src/app/turmas/Models/Turmas.models';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { TopicosService } from 'src/app/topicos/services/topicos.service';
+import { Topico } from 'src/app/topicos/models/topico.model';
 
 @Component( {
 	selector: 'app-pergunta-save',
@@ -19,6 +21,7 @@ export class PerguntaSavePage implements OnInit {
 	id_turma: string;
 	id_topico: string;
 	turma: Turma;
+	topico: Topico;
 	user: firebase.User;
 
 
@@ -28,7 +31,8 @@ export class PerguntaSavePage implements OnInit {
 		private perguntaService: PerguntasService,
 		private navCtrl: NavController,
 		private activatedRoute: ActivatedRoute,
-		private overlayService: OverlayService
+		private overlayService: OverlayService,
+		private topicoService: TopicosService
 
 	) { }
 
@@ -41,10 +45,15 @@ export class PerguntaSavePage implements OnInit {
 
 		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
 		this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
-		const turma2 = await this.turmaService.getTurma( this.id_turma );
+		const turma$ = await this.turmaService.getTurma( this.id_turma );
+		const topico$ = await this.topicoService.get( this.id_topico );
 
-		await turma2.subscribe( turm => {
+		await turma$.subscribe( turm => {
 			this.turma = turm;
+		} );
+
+		await topico$.subscribe( topic => {
+			this.topico = topic;
 		} );
 	}
 
@@ -84,12 +93,17 @@ export class PerguntaSavePage implements OnInit {
 						return;
 					}
 					this.turma.lista[i].moedas = moeda;
-					this.turma.lista[i].lista_topico[this.turma.lista[i].posicao].qtd_questoes++;
+					for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {					
+						if ( this.turma.lista[i].lista_topico[j].nome_topico == this.topico.title ) {
+							this.turma.lista[i].lista_topico[j].qtd_questoes++;
+						}
+					}
+
 					this.turmaService.updateTurma( this.turma );
-					if ( this.turma.lista )
+					//if ( this.turma.lista )
 				}
 			}
-			
+
 			const pergunta = await this.perguntaService.create_pergunta( this.perguntaForm.value );
 
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos/' + this.id_topico + '/perguntas' );

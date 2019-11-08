@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\app",
+    "\\src\\app\\minhasturmas",
+    "\\src\\app\\minhasturmas\\pages",
+    "\\src\\app\\minhasturmas\\pages\\minhasturmas-list",
     "\\src\\app\\perguntas",
-    "\\src\\app\\perguntas\\models",
     "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\pergunta-save",
     "\\src\\app\\perguntas\\pages\\perguntas-list",
-    "\\src\\app\\turmas",
-    "\\src\\app\\turmas\\Models"
+    "\\src\\app\\topicos"
   ],
-  "SelectedNode": "\\src\\app\\perguntas\\models\\pergunta.model.ts",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }

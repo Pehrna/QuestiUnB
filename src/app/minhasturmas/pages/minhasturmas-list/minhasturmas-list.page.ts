@@ -50,7 +50,7 @@ export class MinhasturmasListPage implements OnInit {
 
 		this.invite = turma.lista;
 		if ( this.invite == null ) {
-			this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: 0, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico:[] }];
+			this.invite = [{ id_turma: turma.id, id_aluno: this.user.uid, nota: 0, moedas: 30, posicao: 0, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico:[] }];
 			const turma_Inscricao = { ...turma, lista: this.invite };
 			await this.turmaService.updateTurma( turma_Inscricao );
 			this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
@@ -64,7 +64,7 @@ export class MinhasturmasListPage implements OnInit {
 			}
 		}
 
-		this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, moedas: 30, posicao: turma.lista.length, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico: [] } );
+		this.invite.push( { id_turma: turma.id, id_aluno: this.user.uid, nota: 0, moedas: 30, posicao: turma.lista.length, reputacao_compartilhador: 0, reputacao_avaliador: 0, lista_topico: [] } );
 		const turma_Inscricao = { ...turma, lista: this.invite };
 		await this.turmaService.updateTurma( turma_Inscricao );
 		this.navCtrl.navigateForward( '/turmas/' + turma.id + '/topicos' );
