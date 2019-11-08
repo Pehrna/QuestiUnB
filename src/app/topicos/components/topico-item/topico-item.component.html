@@ -2,14 +2,13 @@
 
 
 	<ng-container *ngIf="topico.encerrado">
-		<ion-item>
+		<ion-item (click)="select.emit(topico)">
 
 			<div class="topico_deactivated" ng-if="!topico.encerrado">
 				<h4><strong>{{topico.title}}  </strong></h4>
-				{{topico.data_inicio | date:'dd/MM/yy'}}  ate {{topico.data_fim | date:'dd/MM/yy'}}
+				{{topico.data_inicio | date:'dd/MM/yy'}}  ate {{topico.data_fim | date:'dd/MM/yy'}}      encerrado
 			</div>
-
-		</ion-item>
+		</ion-item>		
 	</ng-container>
 
 	<ng-container *ngIf="!topico.encerrado">

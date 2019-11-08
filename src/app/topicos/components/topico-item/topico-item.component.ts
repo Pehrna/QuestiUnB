@@ -121,9 +121,9 @@ export class TopicoItemComponent {
 
 					const moeda = turma.lista[i].moedas + 2;
 					turma.lista[i].moedas = moeda;
-					this.turmaService.updateTurma( turma );
-
+					
 				}
+				this.turmaService.updateTurma( turma );
 			} catch ( error ) {
 				console.log( error );
 			}

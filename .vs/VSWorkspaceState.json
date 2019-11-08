@@ -4,12 +4,17 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\minhasturmas",
-    "\\src\\app\\minhasturmas\\pages",
-    "\\src\\app\\minhasturmas\\pages\\minhasturmas-list",
+    "\\src\\app\\minhasturmas\\components",
+    "\\src\\app\\minhasturmas\\components\\minhasturmas-item",
     "\\src\\app\\perguntas",
     "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\perguntas-list",
-    "\\src\\app\\topicos"
+    "\\src\\app\\perguntas\\pages\\pergunta-save",
+    "\\src\\app\\topicos",
+    "\\src\\app\\topicos\\components",
+    "\\src\\app\\topicos\\components\\topico-item",
+    "\\src\\app\\topicos\\pages",
+    "\\src\\app\\topicos\\services",
+    "\\src\\app\\turmas"
   ],
   "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false

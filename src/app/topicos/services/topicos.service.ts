@@ -30,7 +30,7 @@ export class TopicosService extends Firestore<Topico> {
 			this.authService.authState$.subscribe( user => {
 				if ( user ) {
 					this.setCollection( '/turmas/' + this.id_aqui + '/topicos', ref =>
-						ref.orderBy( 'data_criada', 'desc' ) );
+						ref.orderBy( 'data_criada', 'asc' ) );
 					return;
 				}
 				this.setCollection( null );

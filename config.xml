@@ -1,12 +1,10 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.4.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.4.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>QuestiUnB</name>
   <description>
     An awesome Ionic/Cordova app made by OPehrna.
 
     Zip Allign = C:\Users\Vinicius\AppData\Local\Android\sdk\build-tools\28.0.3
-
-    restituição feita, falta aprimorar
 
     Qc feito
     Ci feito
@@ -16,6 +14,7 @@
     fi flag criada falta interagir
     
     Adicionar pesos
+    Restituição feita, falta aprimorar
     
     Fc discutir
 

@@ -23,6 +23,7 @@ export class PerguntaSavePage implements OnInit {
 	turma: Turma;
 	topico: Topico;
 	user: firebase.User;
+	moedas: number = 0;
 
 
 	constructor( private fb: FormBuilder,
@@ -50,11 +51,18 @@ export class PerguntaSavePage implements OnInit {
 
 		await turma$.subscribe( turm => {
 			this.turma = turm;
+			for ( var i = 0; i < this.turma.lista.length; i++ ) {
+				if ( this.turma.lista[i].id_aluno == this.user.uid ) {
+					this.moedas = this.turma.lista[i].moedas;
+				}
+			}
 		} );
 
 		await topico$.subscribe( topic => {
 			this.topico = topic;
 		} );
+		
+
 	}
 
 
