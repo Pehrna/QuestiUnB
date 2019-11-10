@@ -30,9 +30,9 @@ export class TurmaSavePage implements OnInit {
 		private route: ActivatedRoute
 	) { }
 
-	ngOnInit(): void {
-		this.createForm();
-		this.init();
+	async ngOnInit(): Promise<void> {
+			this.createForm();
+			this.init();
 	}
 
 	init(): void {
@@ -76,7 +76,7 @@ export class TurmaSavePage implements OnInit {
 				} );
 			this.navCtrl.navigateBack( '/turmas' );
 		} catch ( error ) {
-			console.log( 'Erro ao criar tarefa: ', error )
+			console.log( 'Erro ao salvar turma: ', error )
 			await this.overlayService.toast( {
 				message: error.message
 			} );

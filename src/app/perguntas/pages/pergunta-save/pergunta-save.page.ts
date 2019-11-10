@@ -38,31 +38,42 @@ export class PerguntaSavePage implements OnInit {
 	) { }
 
 	async ngOnInit(): Promise<void> {
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
 
-		this.createForm();
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
 		} );
+		try {
+			this.createForm();
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
 
-		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
-		this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
-		const turma$ = await this.turmaService.getTurma( this.id_turma );
-		const topico$ = await this.topicoService.get( this.id_topico );
+			this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
+			this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
+			const turma$ = await this.turmaService.getTurma( this.id_turma );
+			const topico$ = await this.topicoService.get( this.id_topico );
 
-		await turma$.subscribe( turm => {
-			this.turma = turm;
-			for ( var i = 0; i < this.turma.lista.length; i++ ) {
-				if ( this.turma.lista[i].id_aluno == this.user.uid ) {
-					this.moedas = this.turma.lista[i].moedas;
+			await turma$.subscribe( turm => {
+				this.turma = turm;
+				for ( var i = 0; i < this.turma.lista.length; i++ ) {
+					if ( this.turma.lista[i].id_aluno == this.user.uid ) {
+						this.moedas = this.turma.lista[i].moedas;
+					}
 				}
-			}
-		} );
+			} );
 
-		await topico$.subscribe( topic => {
-			this.topico = topic;
-		} );
-		
+			await topico$.subscribe( topic => {
+				this.topico = topic;
+			} );
 
+		} catch ( error ) {
+			console.log( 'Erro ao carregar formulario: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
+		}
 	}
 
 
@@ -117,7 +128,10 @@ export class PerguntaSavePage implements OnInit {
 			this.navCtrl.navigateBack( '/turmas/' + this.id_turma + '/topicos/' + this.id_topico + '/perguntas' );
 		}
 		catch ( error ) {
-			console.log( error );
+			console.log( 'Erro ao salvar pergunta: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
 		} finally {
 			loading.dismiss();
 		}

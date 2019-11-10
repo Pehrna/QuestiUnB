@@ -4,6 +4,7 @@ import { Dado } from 'src/app/auth/pages/auth.model';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginService } from 'src/app/core/services/service.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 
 @Component( {
@@ -23,7 +24,11 @@ export class PerguntaItemComponent {
 	divDisable: boolean = false;
 	token: number = 0;
 
-	constructor( private authService: AuthService, private serviceService: LoginService ) { }
+	constructor(
+		private authService: AuthService,
+		private serviceService: LoginService,
+		private overlayService: OverlayService
+) { }
 
 
 	@Input() pergunta: Pergunta;
@@ -35,41 +40,52 @@ export class PerguntaItemComponent {
 	@Output() avaliarMal = new EventEmitter<Nota>();
 
 	async ngOnInit() {
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
+		} );
+		try {
 
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
-		} );
-		this.usuario$ = this.serviceService.get( this.user.uid );
-		await this.usuario$.subscribe( usu => {
-			this.usuario = usu;
-		} );
-		if ( this.pergunta.avaliacao == null ) {
-			this.tamanho = 0;
-		} else {
-			this.tamanho = this.pergunta.avaliacao.length;
-		}
-		for ( var i = 0; i < this.tamanho; i++ ) {
-			if ( this.pergunta.avaliacao[i].dono == this.user.uid ) {
-				this.divDisable = true;
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+			this.usuario$ = this.serviceService.get( this.user.uid );
+			await this.usuario$.subscribe( usu => {
+				this.usuario = usu;
+			} );
+			if ( this.pergunta.avaliacao == null ) {
+				this.tamanho = 0;
+			} else {
+				this.tamanho = this.pergunta.avaliacao.length;
 			}
-		}
-		if ( this.pergunta.dono == this.user.uid ) {
-			this.divDisable = true;
-		}
-
-		if ( this.pergunta.avaliacao == null ) {
-		} else {
-			this.tamanho = this.pergunta.avaliacao.length;
-
 			for ( var i = 0; i < this.tamanho; i++ ) {
-				if ( this.pergunta.avaliacao[i].like == 'Like' ) {
-					this.likes++;
-				} else {
-					this.dislikes++
+				if ( this.pergunta.avaliacao[i].dono == this.user.uid ) {
+					this.divDisable = true;
 				}
 			}
-		}
+			if ( this.pergunta.dono == this.user.uid ) {
+				this.divDisable = true;
+			}
 
+			if ( this.pergunta.avaliacao == null ) {
+			} else {
+				this.tamanho = this.pergunta.avaliacao.length;
+
+				for ( var i = 0; i < this.tamanho; i++ ) {
+					if ( this.pergunta.avaliacao[i].like == 'Like' ) {
+						this.likes++;
+					} else {
+						this.dislikes++
+					}
+				}
+			}
+		} catch ( error ) {
+			console.log( 'Erro ao carregar perguntas: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
+		}
 	}
 
 }

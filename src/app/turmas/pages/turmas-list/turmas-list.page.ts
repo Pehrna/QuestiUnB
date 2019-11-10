@@ -38,14 +38,27 @@ export class TurmasListPage implements OnInit {
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
+
 		} );
-		this.turmas$ = this.turmaService.getAllTurma();
-		this.usuario$ = this.serviceService.get( this.user.uid );
-		await this.usuario$.subscribe( usu => {
-			this.usuario = usu;
-		} );
+		try {
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+			this.turmas$ = this.turmaService.getAllTurma();
+			this.usuario$ = this.serviceService.get( this.user.uid );
+			await this.usuario$.subscribe( usu => {
+				this.usuario = usu;
+			} );
+		} catch ( error ) {
+			console.log( 'Erro ao carregar turmas: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
+		}
 	}
 
 	async abra( turma: Turma ) {
@@ -84,11 +97,8 @@ export class TurmasListPage implements OnInit {
 				this.dataReturned = dataReturned.data;
 				this.onSelect( turma, this.dataReturned );
 			}
-		} );
-
-
+		} );	
 		return await pop.present();
-
 	}
 
 	async onSelect( turma: Turma, teste: boolean ): Promise<void> {

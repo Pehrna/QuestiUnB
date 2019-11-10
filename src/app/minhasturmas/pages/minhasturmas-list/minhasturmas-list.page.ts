@@ -6,6 +6,7 @@ import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Dado } from 'src/app/auth//pages/auth.model';
 import { LoginService } from 'src/app/core/services/service.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 @Component( {
 	selector: 'app-minhasturmas-list',
@@ -24,17 +25,31 @@ export class MinhasturmasListPage implements OnInit {
 		private turmaService: TurmasService,
 		private navCtrl: NavController,
 		private authService: AuthService,
-		private serviceService: LoginService ) { }
+		private serviceService: LoginService,
+		private overlayService: OverlayService
+) { }
 
 	async ngOnInit(): Promise<void> {
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
 		} );
-		this.turmas$ = this.turmaService.getAllTurma();
-		this.usuario$ = this.serviceService.get( this.user.uid );
-		await this.usuario$.subscribe( usu => {
-			this.usuario = usu;
-		} );
+		try {
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+			this.turmas$ = this.turmaService.getAllTurma();
+			this.usuario$ = this.serviceService.get( this.user.uid );
+			await this.usuario$.subscribe( usu => {
+				this.usuario = usu;
+			} );
+		} catch ( error ) {
+			console.log( 'Erro ao carregar turmas: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
+		}
 	}
 
 	async onSelect( turma: Turma ): Promise<void> {

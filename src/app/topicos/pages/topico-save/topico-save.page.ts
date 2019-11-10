@@ -36,6 +36,7 @@ export class TopicoSavePage implements OnInit {
 	) { }
 
 	async ngOnInit() {
+
 		this.createForm();
 		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
 		const turma2 = await this.turmaService.getTurma( this.id_turma );
@@ -43,7 +44,6 @@ export class TopicoSavePage implements OnInit {
 		await turma2.subscribe( turm => {
 			this.turma = turm;
 		} );
-
 
 	}
 
@@ -68,9 +68,7 @@ export class TopicoSavePage implements OnInit {
 	async onSubmit(): Promise<void> {
 		const loading = await this.overlayService.loading( {
 			message: 'Salvando...'
-		}
-
-		);
+		} );
 		try {
 			var b = this.topicoForm.value.data_inicio;
 			b = b.substring( 0, 11 ) + '00:01:00.000-03:00';
@@ -87,24 +85,30 @@ export class TopicoSavePage implements OnInit {
 				await this.overlayService.toast( {
 					message: 'Nao existe alunos nessa turma!'
 				} );
-				return;
 			}
-
-			for ( var i = 0; i < this.turma.lista.length; i++ ) {
-				this.aux = this.aux + this.turma.lista[i].reputacao_compartilhador;
-			}
-			for ( var i = 0; i < this.turma.lista.length; i++ ) {
-				this.questao = this.turma.lista[i].lista_topico;
-				if ( this.aux != 0 ) {
-					this.aux2 = this.topicoForm.value.quantidade * ( this.turma.lista[i].reputacao_compartilhador / this.aux );
-				} else {
-					this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
+			if ( this.turma.lista != null ) {
+				for ( var i = 0; i < this.turma.lista.length; i++ ) {
+					this.aux = this.aux + this.turma.lista[i].nota;
 				}
-				this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2, fator_recompensa: 1, nota_avaliador: 0, nota_compartilhador:0 } );
-				this.turma.lista[i].lista_topico = this.questao;
-				const turma_aux = this.turma;
-				await this.turmaService.updateTurma( turma_aux );
+			} else {
+				this.aux = 0;
 			}
+			if ( this.turma.lista != null ) {
+				for ( var i = 0; i < this.turma.lista.length; i++ ) {
+					this.questao = this.turma.lista[i].lista_topico;
+					if ( this.aux != 0 ) {
+						this.aux2 = this.topicoForm.value.quantidade * ( this.turma.lista[i].reputacao_compartilhador / this.aux );
+					} else {
+						this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
+					}
+					this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2, fator_recompensa: 1, nota_avaliador: 0, nota_compartilhador: 0 } );
+					this.turma.lista[i].lista_topico = this.questao;
+					//const turma_aux = this.turma;
+				}
+			}
+			await this.turmaService.updateTurma( this.turma );
+
+
 
 			const topico2 = await this.topicoService.create_topico( this.topicoForm.value );
 

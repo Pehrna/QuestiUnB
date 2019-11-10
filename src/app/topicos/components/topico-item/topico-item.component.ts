@@ -43,10 +43,10 @@ export class TopicoItemComponent {
 
 
 	async ngOnInit() {
-		const loading = await this.overlayService.loading( {} );
-
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
+		} );
 		try {
-
 			await this.authService.authState$.subscribe( user => {
 				this.user = user
 			} );
@@ -66,8 +66,6 @@ export class TopicoItemComponent {
 			var dayHJ = d.getUTCDate();
 
 			const turma2 = await this.turmaService.getTurma( this.topico.id_turma );
-
-
 
 			//console.log( "Nome: ", this.topico.title );
 			if ( year < yearHJ ) {
@@ -104,31 +102,46 @@ export class TopicoItemComponent {
 				}
 			}
 		} catch ( error ) {
-			console.log( error );
+			console.log( 'Erro ao carregar o topico: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
 		} finally {
 			loading.dismiss();
 		}
 	}
 	async restituicao( turma: Turma ) {
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
+		} );
+		try {
 
-		if ( !this.topico.encerrado ) {
-			this.topico.encerrado = true;
-			this.topicoService.update( this.topico );
+			if ( !this.topico.encerrado ) {
+				this.topico.encerrado = true;
+				this.topicoService.update( this.topico );
 
-			try {
+				try {
 
-				for ( var i = 0; i < turma.lista.length; i++ ) {	
+					for ( var i = 0; i < turma.lista.length; i++ ) {
 
-					const moeda = turma.lista[i].moedas + 2;
-					turma.lista[i].moedas = moeda;
-					
+						const moeda = turma.lista[i].moedas + 2;
+						turma.lista[i].moedas = moeda;
+
+					}
+					this.turmaService.updateTurma( turma );
+				} catch ( error ) {
+					console.log( error );
 				}
-				this.turmaService.updateTurma( turma );
-			} catch ( error ) {
-				console.log( error );
+			} else {
+				//console.log( "Ja tava encerrado!" );
 			}
-		} else {
-			//console.log( "Ja tava encerrado!" );
+		} catch ( error ) {
+			console.log( 'Erro ao restituir: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
 		}
 
 	}

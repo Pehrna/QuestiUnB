@@ -47,7 +47,7 @@ export class PerguntasListPage implements OnInit {
 
 	async ngOnInit() {
 		const loading = await this.overlayService.loading( {
-
+			message: 'Carregando...'
 		} );
 		try {
 			await this.authService.authState$.subscribe( user => {
@@ -90,71 +90,93 @@ export class PerguntasListPage implements OnInit {
 
 	async onAvaliarBem( pergunta: Pergunta ): Promise<void> {
 
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
-		} );
 
-		var time = new Date();
-		this.aval = pergunta.avaliacao;
-		if ( this.aval == null ) {
-			this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time }];
+		const loading = await this.overlayService.loading( {
+			message: 'Atualizando...'
+		} );
+		try {
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+
+			var time = new Date();
+			this.aval = pergunta.avaliacao;
+			if ( this.aval == null ) {
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time }];
+				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
+				await this.perguntaService.update( pergunta_aval );
+				this.media( this.perg, pergunta.dono );
+				return;
+			}
+
+			for ( var i = 0; i < this.aval.length; i++ ) {
+				if ( this.aval[i].dono == this.user.uid ) {
+					await this.overlayService.toast( {
+						message: 'Essa pergunta já foi avaliada!'
+					} );
+					return;
+				}
+			}
+
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
 			this.media( this.perg, pergunta.dono );
-			return;
 		}
-
-		for ( var i = 0; i < this.aval.length; i++ ) {
-			if ( this.aval[i].dono == this.user.uid ) {
-				await this.overlayService.toast( {
-					message: 'Essa pergunta já foi avaliada!'
-				} );
-				return;
-			}
+		catch ( error ) {
+			console.log( error );
+		} finally {
+			loading.dismiss();
 		}
-
-		this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time } );
-		const pergunta_aval = { ...pergunta, avaliacao: this.aval };
-		await this.perguntaService.update( pergunta_aval );
-		this.media( this.perg, pergunta.dono );
-
 	}
+
 
 
 	async onAvaliarMal( pergunta: Pergunta ): Promise<void> {
 
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
+		const loading = await this.overlayService.loading( {
+			message: 'Atualizando...'
 		} );
+		try {
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
 
-		this.aval = pergunta.avaliacao;
-		var time = new Date();
+			this.aval = pergunta.avaliacao;
+			var time = new Date();
 
-		if ( this.aval == null ) {
-			this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time }];
+			if ( this.aval == null ) {
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time }];
+				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
+				await this.perguntaService.update( pergunta_aval );
+				this.media( this.perg, pergunta.dono );
+				return;
+			}
+
+			for ( var i = 0; i < this.aval.length; i++ ) {
+				if ( this.aval[i].dono == this.user.uid ) {
+					await this.overlayService.toast( {
+						message: 'Essa pergunta já foi avaliada!'
+					} );
+					return;
+				}
+			}
+
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
 			this.media( this.perg, pergunta.dono );
-			return;
 		}
-
-		for ( var i = 0; i < this.aval.length; i++ ) {
-			if ( this.aval[i].dono == this.user.uid ) {
-				await this.overlayService.toast( {
-					message: 'Essa pergunta já foi avaliada!'
-				} );
-				return;
-			}
+		catch ( error ) {
+			console.log( error );
+		} finally {
+			loading.dismiss();
 		}
-
-		this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time } );
-		const pergunta_aval = { ...pergunta, avaliacao: this.aval };
-		await this.perguntaService.update( pergunta_aval );
-		this.media( this.perg, pergunta.dono );
-
 	}
 
 	async media( pergunta: Pergunta[], dono: string ) {
+
+
 		var qtd_perg = 0;
 		var soma_das_medias = 0;
 		var media_total = 0;
@@ -164,7 +186,7 @@ export class PerguntasListPage implements OnInit {
 		//isso serve pra calcular nota de compartilhador	
 
 		for ( var i = 0; i < pergunta.length; i++ ) {
-			if ( pergunta[i].dono == dono && pergunta[i].avaliacao != null ) {		
+			if ( pergunta[i].dono == dono && pergunta[i].avaliacao != null ) {
 				qtd_perg++;
 				qtd_like = 0;
 				if ( pergunta[i].avaliacao == null ) {
@@ -186,14 +208,18 @@ export class PerguntasListPage implements OnInit {
 			}
 		}
 
-		media_total = soma_das_medias / qtd_perg;
+
 
 		// esse for serve pra achar o dono da pergunta e atualizar a nota de compartilhador dele
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
 					if ( this.turma.lista[i].lista_topico[j].nome_topico == this.topico.title ) {
-						this.turma.lista[i].lista_topico[j].nota_compartilhador = media_total;						
+						//media_total = soma_das_medias / qtd_perg;
+						//Essa era a conta dividindo pela quantidade de perguntas feitas
+						//Agora é pela quantidade de erguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
+						media_total = soma_das_medias / this.turma.lista[i].lista_topico[j].qtd_esperada;
+						this.turma.lista[i].lista_topico[j].nota_compartilhador = media_total;
 					}
 				}
 			}
@@ -217,7 +243,7 @@ export class PerguntasListPage implements OnInit {
 		var r_agregado = 0;
 		//percorre lista de alunos
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
-			console.log( "AVALIADOR " ,i+1,": ", this.turma.lista[i].id_aluno );
+			console.log( "AVALIADOR ", i + 1, ": ", this.turma.lista[i].id_aluno );
 			qtd_perg = 0;
 			soma_das_medias = 0;
 			media_total = 0;
@@ -247,7 +273,7 @@ export class PerguntasListPage implements OnInit {
 				for ( var k = 0; k < qtd_lista_avaliacao; k++ ) {
 					console.log( "	Se tem avaliações, entra aqui. " );
 					console.log( "	Pergunta: ", j + 1, ", Avaliacao ", k + 1, ": ", pergunta[j].avaliacao[k].like );
-					console.log("Dono: ", pergunta[j].avaliacao[k].dono);
+					console.log( "Dono: ", pergunta[j].avaliacao[k].dono );
 					if ( pergunta[j].avaliacao[k].like == 'Like' ) {
 						console.log( "		Aqui começa a contagem de likes dessa perguntana posicao [j]. " );
 						qtd_like = qtd_like + 1;
@@ -308,7 +334,7 @@ export class PerguntasListPage implements OnInit {
 			//				console.log( "Aluno: ", this.turma.lista[l].id_aluno );
 			//				console.log("Recebe nota: ", media_total);
 			//				this.turma.lista[l].lista_topico[m].nota_avaliador = media_total;
-							
+
 			//			}
 			//		}
 			//	}
@@ -323,4 +349,6 @@ export class PerguntasListPage implements OnInit {
 		await this.turmaService.updateTurma( this.turma );
 
 	}
+
 }
+

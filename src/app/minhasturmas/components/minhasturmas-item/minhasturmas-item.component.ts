@@ -4,6 +4,7 @@ import { Dado } from 'src/app/auth/pages/auth.model';
 import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginService } from 'src/app/core/services/service.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
 
 @Component( {
 	selector: 'app-minhasturmas-item',
@@ -19,7 +20,11 @@ export class MinhasTurmasItemComponent {
 	tamanho: number = 0;
 	divDisable: boolean = false;
 
-	constructor( private authService: AuthService, private serviceService: LoginService ) { }
+	constructor(
+		private authService: AuthService,
+		private serviceService: LoginService,
+		private overlayService: OverlayService
+	) { }
 
 	@Input() turma: Turma;
 	@Output() done = new EventEmitter<Turma>();
@@ -28,30 +33,42 @@ export class MinhasTurmasItemComponent {
 	@Output() select = new EventEmitter<Turma>();
 
 	async ngOnInit() {
-
-		if ( this.turma.lista !== null ) {
-			this.tamanho = this.turma.lista.length;
-		} else {
-			this.tamanho = 0;
-		}
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
 		} );
-		this.usuario$ = this.serviceService.get( this.user.uid );
-		await this.usuario$.subscribe( usu => {
-			this.usuario = usu;
-		} );
+		try {
 
-		if ( this.tamanho == 0 && this.turma.dono == this.user.uid ) {
-			this.divDisable = true;
-		}
+			if ( this.turma.lista !== null ) {
+				this.tamanho = this.turma.lista.length;
+			} else {
+				this.tamanho = 0;
+			}
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+			this.usuario$ = this.serviceService.get( this.user.uid );
+			await this.usuario$.subscribe( usu => {
+				this.usuario = usu;
+			} );
 
-		for ( var i = 0; i < this.tamanho; i++ ) {			
-			if ( this.turma.lista !== undefined || this.turma.dono == this.user.uid ) {			
-				if ( this.turma.lista[i].id_aluno == this.user.uid || this.turma.dono == this.user.uid ) {
-					this.divDisable = true;
+			if ( this.tamanho == 0 && this.turma.dono == this.user.uid ) {
+				this.divDisable = true;
+			}
+
+			for ( var i = 0; i < this.tamanho; i++ ) {
+				if ( this.turma.lista !== undefined || this.turma.dono == this.user.uid ) {
+					if ( this.turma.lista[i].id_aluno == this.user.uid || this.turma.dono == this.user.uid ) {
+						this.divDisable = true;
+					}
 				}
 			}
+		} catch ( error ) {
+			console.log( 'Erro ao carregar turmas: ', error )
+			await this.overlayService.toast( {
+				message: error.message
+			} );
+		} finally {
+			loading.dismiss();
 		}
 	}
 }

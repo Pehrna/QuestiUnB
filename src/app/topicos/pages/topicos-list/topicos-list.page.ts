@@ -7,6 +7,9 @@ import { NavController } from '@ionic/angular';
 import { Dado } from 'src/app/auth/pages/auth.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginService } from 'src/app/core/services/service.service';
+import { OverlayService } from 'src/app/core/services/overlay.service';
+import { Turma } from 'src/app/turmas/Models/Turmas.models';
+import { TurmasService } from 'src/app/turmas/services/turmas.service';
 
 
 @Component( {
@@ -20,33 +23,65 @@ export class TopicosListPage implements OnInit {
 	user: firebase.User;
 	id_turma: string;
 	topicos$: Observable<Topico[]>;
+	topicos: Topico[];
+	turma$: Observable<Turma>;
+	turma: Turma;
 
 	constructor( private topicosService: TopicosService,
+		private turmaService: TurmasService,
 		private activatedRoute: ActivatedRoute,
 		private navCtrl: NavController,
 		private serviceService: LoginService,
-		private authService: AuthService
+		private authService: AuthService,
+		private overlayService: OverlayService
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		await this.authService.authState$.subscribe( user => {
-			this.user = user
+		const loading = await this.overlayService.loading( {
+			message: 'Carregando...'
 		} );
-		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
-		await this.topicosService.id_Turma( this.id_turma );
-		this.topicos$ = this.topicosService.getAll();
-		this.usuario$ = this.serviceService.get( this.user.uid );
-		await this.usuario$.subscribe( usu => {
-			this.usuario = usu;
-		} );
-
-
+		try {
+			await this.authService.authState$.subscribe( user => {
+				this.user = user
+			} );
+			this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
+			await this.topicosService.id_Turma( this.id_turma );
+			this.topicos$ = this.topicosService.getAll();
+			await this.topicos$.subscribe( topic => {
+				this.topicos = topic;
+			} )
+			this.turma$ = this.turmaService.getTurma( this.id_turma );
+			await this.turma$.subscribe( turm => {
+				this.turma = turm;
+			} );
+			this.usuario$ = this.serviceService.get( this.user.uid );
+			await this.usuario$.subscribe( usu => {
+				this.usuario = usu;
+				//for ( var i = 0; i < this.topicos.length; i++ ) {
+				//	var aux = false;
+				//	var cont = 0;
+				//	for ( var j = 0; j < this.turma.lista.length; j++ ) {
+				//		for ( var k = 0; k < this.turma.lista[j].lista_topico.length;k++) {
+				//			if ( this.turma.lista[j].lista_topico[k].nome_topico == this.topicos[i].title ) {
+				//				cont++;
+				//			}
+				//		}
+				//	}
+				//}
+			} );
+		} catch ( error ) {
+			console.log( 'Erro: ', error )
+		} finally {
+			loading.dismiss();
+		}
 
 	}
 
 
 	onSelect( topico: Topico ): void {
 		this.navCtrl.navigateForward( '/turmas/' + this.id_turma + '/topicos/' + topico.id + '/perguntas' );
+
+
 	}
 
 
