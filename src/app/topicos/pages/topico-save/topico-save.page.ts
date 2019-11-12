@@ -98,8 +98,16 @@ export class TopicoSavePage implements OnInit {
 					this.questao = this.turma.lista[i].lista_topico;
 					if ( this.aux != 0 ) {
 						this.aux2 = this.topicoForm.value.quantidade * ( this.turma.lista[i].reputacao_compartilhador / this.aux );
+						this.aux2 = Math.round( this.aux2 );
+						if ( this.aux2 < 1 ) {
+							this.aux2 = 1;
+						}
 					} else {
 						this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
+						this.aux2 = Math.round( this.aux2 );
+						if ( this.aux2 < 1 ) {
+							this.aux2 = 1;
+						}
 					}
 					this.questao.push( { id_turma: this.turma.id, id_aluno: this.turma.lista[i].id_aluno, nome_topico: this.topicoForm.value.title, qtd_questoes: 0, qtd_esperada: this.aux2, fator_recompensa: 1, nota_avaliador: 0, nota_compartilhador: 0 } );
 					this.turma.lista[i].lista_topico = this.questao;

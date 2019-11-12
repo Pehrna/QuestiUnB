@@ -9,11 +9,7 @@
     "\\src\\app\\topicos\\pages",
     "\\src\\app\\topicos\\pages\\topico-save",
     "\\src\\app\\topicos\\pages\\topicos-list",
-    "\\src\\app\\turmas",
-    "\\src\\app\\turmas\\pages",
-    "\\src\\app\\turmas\\pages\\turma-login",
-    "\\src\\app\\turmas\\pages\\turma-save",
-    "\\src\\app\\turmas\\pages\\turmas-list"
+    "\\src\\app\\turmas"
   ],
   "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false

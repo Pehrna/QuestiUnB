@@ -20,6 +20,8 @@ export class TopicoItemComponent {
 	user: firebase.User;
 	usuario: Dado = { ...this.usuario, professor: false };
 	usuario$: Observable<Dado>;
+	topicos$: Observable<Topico[]>;
+	topicos: Topico[];
 	tamanho: number = 0;
 	divDisable: boolean = false;
 	agora: Date = new Date();
@@ -54,7 +56,12 @@ export class TopicoItemComponent {
 			await this.usuario$.subscribe( usu => {
 				this.usuario = usu;
 			} );
+			this.topicos$ = this.topicoService.getAll();
+			await this.topicos$.subscribe( topics => {
+				this.topicos = topics;
+			} );
 
+			
 			var c = JSON.stringify( this.topico.data_fim );
 			var year = parseInt( c.substring( 1, 5 ) );
 			var month = parseInt( c.substring( 6, 8 ) );
@@ -111,6 +118,9 @@ export class TopicoItemComponent {
 		}
 	}
 	async restituicao( turma: Turma ) {
+		var aux = 0;
+		var somatorio = 0;
+		var peso_somado = 0;
 		const loading = await this.overlayService.loading( {
 			message: 'Carregando...'
 		} );
@@ -118,23 +128,41 @@ export class TopicoItemComponent {
 
 			if ( !this.topico.encerrado ) {
 				this.topico.encerrado = true;
-				this.topicoService.update( this.topico );
+				await this.topicoService.update( this.topico );	
+				this.topicos$ = this.topicoService.getAll();
+				await this.topicos$.subscribe( topics => {
+					this.topicos = topics;
+				} );
 
-				try {
-
-					for ( var i = 0; i < turma.lista.length; i++ ) {
-
-						const moeda = turma.lista[i].moedas + 2;
-						turma.lista[i].moedas = moeda;
-
+				for ( var i = 0; i < turma.lista.length; i++ ) {
+					somatorio = 0;
+					aux = 0;
+					for ( var j = 0; j < turma.lista[i].lista_topico.length; j++ ) {
+						for ( var k = 0; k < this.topicos.length; k++ ) {
+							if ( this.topicos[k].title == turma.lista[i].lista_topico[j].nome_topico && this.topicos[k].encerrado ) {
+								console.log( "Se o topico tem os mesmos nomes e ta encerrado: ", this.topicos[k].title );
+								aux++;
+								peso_somado = this.topicos[k].peso_avaliacao + this.topicos[k].peso_pergunta;
+								console.log( "Nota avaliador: ", turma.lista[i].lista_topico[j].nota_avaliador, " multiplicado pelo peso: ", this.topicos[k].peso_avaliacao );
+								console.log( "Nota compartilhador: ", turma.lista[i].lista_topico[j].nota_compartilhador, " multiplicado pelo peso: ", this.topicos[k].peso_pergunta );
+								somatorio = ((turma.lista[i].lista_topico[j].nota_avaliador * this.topicos[k].peso_avaliacao) + (turma.lista[i].lista_topico[j].nota_compartilhador * this.topicos[k].peso_pergunta))/peso_somado + somatorio;								
+								console.log( "Somatorio: ", somatorio );
+								console.log( "Aux:", aux );
+							}
+						}
 					}
-					this.turmaService.updateTurma( turma );
-				} catch ( error ) {
-					console.log( error );
+					console.log( "Esse aluno recebera uma nota: ", turma.lista[i].id_aluno );
+					turma.lista[i].nota = somatorio / aux;
+					console.log( "Essa nota: ", turma.lista[i].nota );
+					const moeda = turma.lista[i].moedas + turma.lista[i].nota;
+					turma.lista[i].moedas = moeda;
 				}
-			} else {
-				//console.log( "Ja tava encerrado!" );
+
+				//const moeda = turma.lista[i].moedas + turma.lista[i].nota;
+				//turma.lista[i].moedas = moeda;
+				this.turmaService.updateTurma( turma );
 			}
+
 		} catch ( error ) {
 			console.log( 'Erro ao restituir: ', error )
 			await this.overlayService.toast( {
