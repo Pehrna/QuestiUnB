@@ -58,10 +58,7 @@ export class PerguntasListPage implements OnInit {
 			this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
 			await this.perguntaService.id_Rota( this.id_turma, this.id_topico );
 			this.perguntas$ = this.perguntaService.getAll();
-			this.topico$ = this.topicoService.get( this.id_topico );
-			this.topico$.subscribe( topi => {
-				this.topico = topi;
-			} );
+			
 			this.usuario$ = this.serviceService.get( this.user.uid );
 			this.usuario$.subscribe( usu => {
 				this.usuario = usu;
@@ -77,6 +74,10 @@ export class PerguntasListPage implements OnInit {
 			} )
 			await this.perguntas$.subscribe( pergu => {
 				this.perg = pergu;
+			} );
+			this.topico$ = this.topicoService.get( this.id_topico );
+			this.topico$.subscribe( topi => {
+				this.topico = topi;
 			} );
 		} catch ( error ) {
 			console.log( 'Erro ao criar tarefa: ', error )
@@ -204,11 +205,8 @@ export class PerguntasListPage implements OnInit {
 				}
 				qtd_like_media = qtd_like / qtd_lista_avaliacao;
 				soma_das_medias = soma_das_medias + qtd_like_media;
-
 			}
 		}
-
-
 
 		// esse for serve pra achar o dono da pergunta e atualizar a nota de compartilhador dele
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
@@ -327,18 +325,6 @@ export class PerguntasListPage implements OnInit {
 			console.log( "R2: ", r2 );
 			console.log( "media total: ", media_total );
 
-			//for ( var l = 0; l < this.turma.lista.length; l++ ) {
-			//	if ( this.turma.lista[l].id_aluno == dono ) {
-			//		for ( var m = 0; m < this.turma.lista[l].lista_topico.length; m++ ) {
-			//			if ( this.turma.lista[l].lista_topico[m].nome_topico == this.topico.title ) {
-			//				console.log( "Aluno: ", this.turma.lista[l].id_aluno );
-			//				console.log("Recebe nota: ", media_total);
-			//				this.turma.lista[l].lista_topico[m].nota_avaliador = media_total;
-
-			//			}
-			//		}
-			//	}
-			//}
 			for ( var m = 0; m < this.turma.lista[i].lista_topico.length; m++ ) {
 				if ( this.turma.lista[i].lista_topico[m].nome_topico == this.topico.title ) {
 					this.turma.lista[i].lista_topico[m].nota_avaliador = media_total;

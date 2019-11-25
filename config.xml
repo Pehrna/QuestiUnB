@@ -1,42 +1,54 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.4.5" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>QuestiUnB</name>
+<widget id="io.ionic.starter" version="0.4.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>QUIZWIKI</name>
     <description>
-    An awesome Ionic/Cordova app made by OPehrna.
+      An awesome Ionic/Cordova app made by OPehrna.
 
-    Pra produzir o .apk:    
-    ionic cordova build android --prod --release
-    
-    Gerador da chave:
-    keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
-    
-    Senha do keygen: viniraquel
-    
-    
-    Zip Allign = C:\Users\Vinicius\AppData\Local\Android\sdk\build-tools\28.0.3\zipalign.exe -v 4 unsigned.apk nome_app.apk
+      Pra produzir o .apk:
+      ionic cordova build android --prod --release
+      C:\Users\Vinicius\Desktop\TCC\copia\platforms\android\app\build\outputs\apk\release
 
+      Gerador da chave:
+      keytool -genkey -v -keystore my-release-key.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
 
-    liberação de topicos encerrados
+      Senha do keygen: viniraquel
 
-
-    Qc feito
-    Ci feito
-    Ri feito
-    Qi feito
-    Wi pesos armazenados pra testar
-    
-    fi flag criada falta interagir
-    
-   
-    Restituição feita, falta aprimorar
-    
-    Introdução de alunos a topicos anteriores a implementar
-    
-    Fc discutir
+      jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore unsigned.apk alias_name
 
 
 
-  </description>
+      Zip Allign =
+      C:\Users\Vinicius\AppData\Local\Android\sdk\build-tools\28.0.3\zipalign.exe -v 4 unsigned.apk nome_app.apk
+
+
+      liberação de topicos encerrados
+
+
+      Qc feito
+      Ci feito
+      Ri feito
+      Qi feito
+      Wi semi feito (Falta o peso do tempo)
+
+
+      Introdução de alunos a topicos ainda abertos
+      (na hora de matricula na turma: se ha topicos abertos, add. se o topco ja fechou, não add esse topico)
+
+      Restituição feita
+      
+      Fc discutir  peso de 0.25 pra 0.50
+
+      consertar a div de topicos pra deslikar
+      botao de login da turma (Mudar local)
+      
+      Atualizar lista de topicos FEITA
+      (informar quantas perguntas ainda ha pra fazer e quantas sao esperadas) FEITA
+      
+      
+
+
+
+    </description>
     <author email="hi@ionicframework.com" href="http://ionicframework.com/">Ionic Framework Team</author>
     <content src="index.html" />
     <access origin="*" />

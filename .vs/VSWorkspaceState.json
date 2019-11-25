@@ -3,14 +3,14 @@
     "",
     "\\src",
     "\\src\\app",
+    "\\src\\app\\perguntas",
     "\\src\\app\\topicos",
     "\\src\\app\\topicos\\components",
     "\\src\\app\\topicos\\components\\topico-item",
     "\\src\\app\\topicos\\pages",
     "\\src\\app\\topicos\\pages\\topico-save",
-    "\\src\\app\\topicos\\pages\\topicos-list",
-    "\\src\\app\\turmas"
+    "\\src\\app\\topicos\\pages\\topicos-list"
   ],
-  "SelectedNode": "\\config.xml",
+  "SelectedNode": "\\src\\app\\topicos\\components\\topico-item\\topico-item.component.html",
   "PreviewInSolutionExplorer": false
 }

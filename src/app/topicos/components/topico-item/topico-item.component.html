@@ -8,7 +8,9 @@
 				<h4><strong>{{topico.title}}  </strong></h4>
 				{{topico.data_inicio | date:'dd/MM/yy'}}  ate {{topico.data_fim | date:'dd/MM/yy'}}      encerrado
 			</div>
-		</ion-item>		
+		</ion-item>
+
+
 	</ng-container>
 
 	<ng-container *ngIf="!topico.encerrado">
@@ -18,16 +20,24 @@
 				<h4><strong>{{topico.title}}  </strong></h4>
 				{{topico.data_inicio | date:'dd/MM/yy'}}  ate {{topico.data_fim | date:'dd/MM/yy'}}
 			</div>
-
 		</ion-item>
+
 	</ng-container>
 
-	<ion-item-options side="start">
+
+	<ng-container *ngIf="falta_pergunta">
+		<ion-item class="topico_deactivated">Ha {{quantas_falta}} pergunta(s) a fazer neste topico</ion-item>
+	</ng-container>
+	
+
+
+
+	<!--<ion-item-options side="start">
 		<ion-item-option color="primary"
 						 (click)="update.emit(topico); sliding.close()">
 			<ion-icon slot="icon-only"
 					  name="construct"></ion-icon>
 		</ion-item-option>
-	</ion-item-options>
+	</ion-item-options>-->
 
 </ion-item-sliding>

@@ -26,7 +26,8 @@ export class PerguntaSavePage implements OnInit {
 	moedas: number = 0;
 
 
-	constructor( private fb: FormBuilder,
+	constructor(
+		private fb: FormBuilder,
 		private authService: AuthService,
 		private turmaService: TurmasService,
 		private perguntaService: PerguntasService,
@@ -38,12 +39,9 @@ export class PerguntaSavePage implements OnInit {
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		const loading = await this.overlayService.loading( {
-			message: 'Carregando...'
-
-		} );
-		try {
+		
 			this.createForm();
+
 			await this.authService.authState$.subscribe( user => {
 				this.user = user
 			} );
@@ -65,22 +63,13 @@ export class PerguntaSavePage implements OnInit {
 			await topico$.subscribe( topic => {
 				this.topico = topic;
 			} );
-
-		} catch ( error ) {
-			console.log( 'Erro ao carregar formulario: ', error )
-			await this.overlayService.toast( {
-				message: error.message
-			} );
-		} finally {
-			loading.dismiss();
-		}
 	}
 
 
-	private createForm(): void {
+	createForm(): void {
 		this.perguntaForm = this.fb.group( {
 			texto: ['', [Validators.required, Validators.minLength( 10 )]],
-			invest: [],
+			invest: [''],
 			avaliacao: [],
 			data_criacao: Date(),
 			dono: null,
