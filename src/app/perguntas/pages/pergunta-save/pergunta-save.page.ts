@@ -39,30 +39,30 @@ export class PerguntaSavePage implements OnInit {
 	) { }
 
 	async ngOnInit(): Promise<void> {
-		
-			this.createForm();
 
-			await this.authService.authState$.subscribe( user => {
-				this.user = user
-			} );
+		this.createForm();
 
-			this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
-			this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
-			const turma$ = await this.turmaService.getTurma( this.id_turma );
-			const topico$ = await this.topicoService.get( this.id_topico );
+		await this.authService.authState$.subscribe( user => {
+			this.user = user
+		} );
 
-			await turma$.subscribe( turm => {
-				this.turma = turm;
-				for ( var i = 0; i < this.turma.lista.length; i++ ) {
-					if ( this.turma.lista[i].id_aluno == this.user.uid ) {
-						this.moedas = this.turma.lista[i].moedas;
-					}
+		this.id_turma = this.activatedRoute.snapshot.paramMap.get( 'id' );
+		this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
+		const turma$ = await this.turmaService.getTurma( this.id_turma );
+		const topico$ = await this.topicoService.get( this.id_topico );
+
+		await turma$.subscribe( turm => {
+			this.turma = turm;
+			for ( var i = 0; i < this.turma.lista.length; i++ ) {
+				if ( this.turma.lista[i].id_aluno == this.user.uid ) {
+					this.moedas = this.turma.lista[i].moedas;
 				}
-			} );
+			}
+		} );
 
-			await topico$.subscribe( topic => {
-				this.topico = topic;
-			} );
+		await topico$.subscribe( topic => {
+			this.topico = topic;
+		} );
 	}
 
 
@@ -87,6 +87,7 @@ export class PerguntaSavePage implements OnInit {
 		);
 
 		this.perguntaForm.value.invest ? null : this.perguntaForm.value.invest = 1;
+		this.perguntaForm.value.data_criacao = Date();
 		try {
 			this.perguntaForm.value.dono = this.user.uid;
 
@@ -101,7 +102,7 @@ export class PerguntaSavePage implements OnInit {
 						return;
 					}
 					this.turma.lista[i].moedas = moeda;
-					for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {					
+					for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
 						if ( this.turma.lista[i].lista_topico[j].nome_topico == this.topico.title ) {
 							this.turma.lista[i].lista_topico[j].qtd_questoes++;
 						}

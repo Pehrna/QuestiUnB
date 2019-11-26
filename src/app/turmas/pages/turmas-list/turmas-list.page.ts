@@ -85,12 +85,14 @@ export class TurmasListPage implements OnInit {
 			}
 		}
 
-		const pop = await this.popoverCtrl.create( {
+		const pop = await this.popoverCtrl.create( {			
+			cssClass: 'custom-popover',
 			component: TurmaLoginPage,
 			componentProps: {
 				"password": turma.password,
 			}
 		} );
+		
 
 		pop.onDidDismiss().then( ( dataReturned ) => {
 			if ( dataReturned !== null ) {

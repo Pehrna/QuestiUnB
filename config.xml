@@ -1,9 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.4.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.5.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QUIZWIKI</name>
     <description>
-      An awesome Ionic/Cordova app made by OPehrna.
-
       Pra produzir o .apk:
       ionic cordova build android --prod --release
       C:\Users\Vinicius\Desktop\TCC\copia\platforms\android\app\build\outputs\apk\release
@@ -15,34 +13,17 @@
 
       jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore my-release-key.keystore unsigned.apk alias_name
 
-
-
       Zip Allign =
       C:\Users\Vinicius\AppData\Local\Android\sdk\build-tools\28.0.3\zipalign.exe -v 4 unsigned.apk nome_app.apk
-
-
-      liberação de topicos encerrados
-
-
-      Qc feito
-      Ci feito
-      Ri feito
-      Qi feito
-      Wi semi feito (Falta o peso do tempo)
-
+           
+      Wi semi feito (Falta o peso do tempo para avaliação)
 
       Introdução de alunos a topicos ainda abertos
       (na hora de matricula na turma: se ha topicos abertos, add. se o topco ja fechou, não add esse topico)
-
-      Restituição feita
       
-      Fc discutir  peso de 0.25 pra 0.50
-
-      consertar a div de topicos pra deslikar
       botao de login da turma (Mudar local)
       
-      Atualizar lista de topicos FEITA
-      (informar quantas perguntas ainda ha pra fazer e quantas sao esperadas) FEITA
+  
       
       
 

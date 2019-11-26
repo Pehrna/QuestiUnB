@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Pergunta, Nota } from '../../models/pergunta.model';
 import { PerguntasService } from '../../services/perguntas.service';
@@ -20,6 +21,7 @@ import { TopicosService } from 'src/app/topicos/services/topicos.service';
 } )
 export class PerguntasListPage implements OnInit {
 
+	perguntaForm: FormGroup;
 	turma$: Observable<Turma>;
 	turma: Turma;
 	id_turma: string;
@@ -35,6 +37,7 @@ export class PerguntasListPage implements OnInit {
 	tamanho: number = 0;
 
 	constructor(
+		private fb: FormBuilder,
 		private perguntaService: PerguntasService,
 		private activatedRoute: ActivatedRoute,
 		private authService: AuthService,
@@ -46,6 +49,10 @@ export class PerguntasListPage implements OnInit {
 	) { }
 
 	async ngOnInit() {
+
+		this.createForm();
+
+
 		const loading = await this.overlayService.loading( {
 			message: 'Carregando...'
 		} );
@@ -58,7 +65,7 @@ export class PerguntasListPage implements OnInit {
 			this.id_topico = this.activatedRoute.snapshot.paramMap.get( 'idd' );
 			await this.perguntaService.id_Rota( this.id_turma, this.id_topico );
 			this.perguntas$ = this.perguntaService.getAll();
-			
+
 			this.usuario$ = this.serviceService.get( this.user.uid );
 			this.usuario$.subscribe( usu => {
 				this.usuario = usu;
@@ -89,6 +96,14 @@ export class PerguntasListPage implements OnInit {
 		}
 	}
 
+	createForm(): void {
+		this.perguntaForm = this.fb.group( {
+
+			data_criacao: Date(),
+
+		} );
+	}
+
 	async onAvaliarBem( pergunta: Pergunta ): Promise<void> {
 
 
@@ -100,13 +115,12 @@ export class PerguntasListPage implements OnInit {
 				this.user = user
 			} );
 
-			var time = new Date();
 			this.aval = pergunta.avaliacao;
 			if ( this.aval == null ) {
-				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time }];
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: new Date() }];
 				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 				await this.perguntaService.update( pergunta_aval );
-				this.media( this.perg, pergunta.dono );
+				this.media( this.perg, this.topico, pergunta.dono );
 				return;
 			}
 
@@ -119,10 +133,10 @@ export class PerguntasListPage implements OnInit {
 				}
 			}
 
-			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: time } );
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: new Date() } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
-			this.media( this.perg, pergunta.dono );
+			this.media( this.perg, this.topico, pergunta.dono );
 		}
 		catch ( error ) {
 			console.log( error );
@@ -147,10 +161,10 @@ export class PerguntasListPage implements OnInit {
 			var time = new Date();
 
 			if ( this.aval == null ) {
-				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time }];
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: new Date() }];
 				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 				await this.perguntaService.update( pergunta_aval );
-				this.media( this.perg, pergunta.dono );
+				this.media( this.perg, this.topico, pergunta.dono );
 				return;
 			}
 
@@ -163,10 +177,10 @@ export class PerguntasListPage implements OnInit {
 				}
 			}
 
-			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: time } );
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: new Date() } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
-			this.media( this.perg, pergunta.dono );
+			this.media( this.perg, this.topico, pergunta.dono );
 		}
 		catch ( error ) {
 			console.log( error );
@@ -175,7 +189,46 @@ export class PerguntasListPage implements OnInit {
 		}
 	}
 
-	async media( pergunta: Pergunta[], dono: string ) {
+
+	diferenca_data_topico_para_pergunta( date_topico_inicio: Date, date_topico_fim: Date, date_pergunta: Date ) {
+
+		console.log( "Data inicio: ", date_topico_inicio );
+		console.log( "Data fim: ", date_topico_fim );
+
+
+		var b = date_pergunta.toString();
+
+
+		b = b.substring( 0, 16 ) + '00:01:00.000-03:00';
+		console.log( "Data pergunta: ", b );
+		console.log( "Data fim: ", new Date( date_topico_fim ).getTime() );
+		console.log( "Data inicio: ", new Date( date_topico_inicio ).getTime() );
+		console.log( "Data pergunta: ", new Date( b ).getTime() );
+
+		var diferenca_date_topicos_milisec = new Date( date_topico_fim ).getTime() - new Date( date_topico_inicio ).getTime();
+
+		var diferenca_date_dias_topico = Math.ceil( diferenca_date_topicos_milisec / ( 1000 * 60 * 60 * 24 ) );
+
+		console.log( "Data final em dias: ", diferenca_date_dias_topico );
+
+		var diferenca_date_pergunta_milisec = new Date( b ).getTime() - new Date( date_topico_inicio ).getTime();
+
+		var diferenca_date_pergunta_para_topico = Math.ceil( diferenca_date_pergunta_milisec / ( 1000 * 60 * 60 * 24 ) );
+
+		console.log( "Diferença da pergunta pro topico: ", diferenca_date_pergunta_para_topico );
+
+		console.log( "Entao a nota deveria ser ", diferenca_date_dias_topico, " menos ", diferenca_date_pergunta_para_topico );
+
+		var resultado = ( diferenca_date_dias_topico - diferenca_date_pergunta_para_topico ) / diferenca_date_dias_topico;
+		
+
+		return resultado;
+
+
+
+	}
+
+	async media( pergunta: Pergunta[], topico: Topico, dono: string ) {
 
 
 		var qtd_perg = 0;
@@ -197,22 +250,37 @@ export class PerguntasListPage implements OnInit {
 				}
 				for ( var j = 0; j < qtd_lista_avaliacao; j++ ) {
 					if ( pergunta[i].avaliacao[j].like == 'Like' ) {
+
 						qtd_like = qtd_like + 1;
 					}
 				}
 				if ( qtd_lista_avaliacao == 0 ) {
 					qtd_lista_avaliacao = 1;
 				}
-				qtd_like_media = qtd_like / qtd_lista_avaliacao;
+				var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[i].data_criacao );
+				console.log( "Nome da pergunta: ", pergunta[i].texto );
+				console.log( "Aqui ta a diferenca: ", diferenca );
+				var peso_compartilhador = 0.5 + 0.5 * diferenca;
+				if( diferenca < 0 ){
+					peso_compartilhador = 0.5;
+				}
+				qtd_like_media = (qtd_like*peso_compartilhador) / qtd_lista_avaliacao;
 				soma_das_medias = soma_das_medias + qtd_like_media;
 			}
 		}
+
+		console.log( "eita" );
+		console.log( "eita" );
+		console.log( "eita" );
+		console.log( "eita" );
+		console.log( "eita" );
+		console.log( "eita" );
 
 		// esse for serve pra achar o dono da pergunta e atualizar a nota de compartilhador dele
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
-					if ( this.turma.lista[i].lista_topico[j].nome_topico == this.topico.title ) {
+					if ( this.turma.lista[i].lista_topico[j].nome_topico == topico.title ) {
 						//media_total = soma_das_medias / qtd_perg;
 						//Essa era a conta dividindo pela quantidade de perguntas feitas
 						//Agora é pela quantidade de erguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
@@ -224,15 +292,6 @@ export class PerguntasListPage implements OnInit {
 		}
 
 
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-		console.log( "NOTA DE AVALIADOR:" );
-
 		//aqui pra atualizar noda de avaliador
 		var flag_aux = false;
 		var nota = 0;
@@ -241,7 +300,6 @@ export class PerguntasListPage implements OnInit {
 		var r_agregado = 0;
 		//percorre lista de alunos
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
-			console.log( "AVALIADOR ", i + 1, ": ", this.turma.lista[i].id_aluno );
 			qtd_perg = 0;
 			soma_das_medias = 0;
 			media_total = 0;
@@ -254,30 +312,22 @@ export class PerguntasListPage implements OnInit {
 			r2 = 0;
 			r_agregado = 0;
 
-			console.log( "Pergunta: ", pergunta );
 			for ( var j = 0; j < pergunta.length; j++ ) {
-				console.log( "Pergunta ", j + 1, ": ", pergunta[j].texto );
 				flag_aux = false;
 				qtd_like = 0;
 				r1 = 0;
 				r_agregado = 0;
 				nota = 0;
-				console.log( "Qtd_likes, r1 e nota recebem 0 pois começamos agora a colher informações dos likes dessa pergunta" );
 				if ( pergunta[j].avaliacao == null ) {
 					qtd_lista_avaliacao = 0;
 				} else {
 					qtd_lista_avaliacao = pergunta[j].avaliacao.length;
 				}
 				for ( var k = 0; k < qtd_lista_avaliacao; k++ ) {
-					console.log( "	Se tem avaliações, entra aqui. " );
-					console.log( "	Pergunta: ", j + 1, ", Avaliacao ", k + 1, ": ", pergunta[j].avaliacao[k].like );
-					console.log( "Dono: ", pergunta[j].avaliacao[k].dono );
 					if ( pergunta[j].avaliacao[k].like == 'Like' ) {
-						console.log( "		Aqui começa a contagem de likes dessa perguntana posicao [j]. " );
 						qtd_like = qtd_like + 1;
 					}
 					if ( pergunta[j].avaliacao[k].dono == this.turma.lista[i].id_aluno ) {
-						console.log( "		Mesmo ID dono e do aluno testado. A flag_aux vira true, a qtd_de_perg ++, e se for um like, qtd_like++" );
 						flag_aux = true;
 						qtd_perg++;
 						if ( pergunta[j].avaliacao[k].like == 'Like' ) {
@@ -286,44 +336,26 @@ export class PerguntasListPage implements OnInit {
 					}
 				}
 				if ( qtd_lista_avaliacao == 0 ) {
-					console.log( "Caso qtd_lista_avaliacao seja 0 (Ou seja, nao haja avaliaçoes), ele recebe 0,5 pra efeitos de calculo" );
 					qtd_like_media = 0.5;
 				} else {
 					qtd_like_media = qtd_like / qtd_lista_avaliacao;
 				}
-				console.log( "Qtd_like: ", qtd_like );
-				console.log( "qtd_lista_avaliacao: ", qtd_lista_avaliacao );
-				console.log( "Qtd_like_media: ", qtd_like_media );
 				if ( flag_aux ) {
-					console.log( "				Se flag_aux for true, o aluno avaliou essa e vai entrar pra uma conta envolvendo RI" );
 					r1 = nota - qtd_like_media;
-					console.log( "				Nota: ", nota );
-					console.log( "				Qtd_like_media: ", qtd_like_media );
-					console.log( "				R1: ", r1 );
 					if ( r1 < 0 ) {
-						console.log( "Se for negativo" );
 						r1 = r1 * -1;
 					}
 
 					r_agregado = 1 - r1;
-					console.log( "R_agregado: ", r_agregado );
 
 				}
-				console.log( "R2 fica sendo um agregador de RIs" );
-				console.log( "R2 antes: ", r2 );
-				console.log( "R_agregado: ", r_agregado );
-				console.log( "R2 depois: ", r_agregado + r2 );
 				r2 = r2 + r_agregado;
 				//aqui é aplicada o peso do tempo
 			}
 			if ( qtd_perg == 0 ) {
 				qtd_perg = 1;
 			}
-			console.log( "Fora do for das perguntas, quando ele percorreu todas elas, faz a media" );
 			media_total = r2 / qtd_perg;
-			console.log( "qtd_perg: ", qtd_perg );
-			console.log( "R2: ", r2 );
-			console.log( "media total: ", media_total );
 
 			for ( var m = 0; m < this.turma.lista[i].lista_topico.length; m++ ) {
 				if ( this.turma.lista[i].lista_topico[m].nome_topico == this.topico.title ) {

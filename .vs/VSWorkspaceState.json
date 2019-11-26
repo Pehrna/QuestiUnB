@@ -4,13 +4,16 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\perguntas",
+    "\\src\\app\\perguntas\\components",
+    "\\src\\app\\perguntas\\components\\pergunta-item",
+    "\\src\\app\\perguntas\\models",
+    "\\src\\app\\perguntas\\pages",
+    "\\src\\app\\perguntas\\pages\\pergunta-save",
+    "\\src\\app\\perguntas\\pages\\perguntas-list",
     "\\src\\app\\topicos",
-    "\\src\\app\\topicos\\components",
-    "\\src\\app\\topicos\\components\\topico-item",
     "\\src\\app\\topicos\\pages",
-    "\\src\\app\\topicos\\pages\\topico-save",
-    "\\src\\app\\topicos\\pages\\topicos-list"
+    "\\src\\app\\topicos\\pages\\topico-save"
   ],
-  "SelectedNode": "\\src\\app\\topicos\\components\\topico-item\\topico-item.component.html",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }
