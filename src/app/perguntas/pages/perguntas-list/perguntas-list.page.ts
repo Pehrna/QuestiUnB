@@ -190,42 +190,24 @@ export class PerguntasListPage implements OnInit {
 	}
 
 
-	diferenca_data_topico_para_pergunta( date_topico_inicio: Date, date_topico_fim: Date, date_pergunta: Date ) {
-
-		console.log( "Data inicio: ", date_topico_inicio );
-		console.log( "Data fim: ", date_topico_fim );
+	diferenca_data_topico_para_pergunta( date_topico_inicio: Date, date_topico_fim: Date, date_pergunta: Date ) {		
 
 
 		var b = date_pergunta.toString();
 
-
-		b = b.substring( 0, 16 ) + '00:01:00.000-03:00';
-		console.log( "Data pergunta: ", b );
-		console.log( "Data fim: ", new Date( date_topico_fim ).getTime() );
-		console.log( "Data inicio: ", new Date( date_topico_inicio ).getTime() );
-		console.log( "Data pergunta: ", new Date( b ).getTime() );
+		b = b.substring( 0, 16 ) + '00:01:00.000-03:00';	
 
 		var diferenca_date_topicos_milisec = new Date( date_topico_fim ).getTime() - new Date( date_topico_inicio ).getTime();
 
 		var diferenca_date_dias_topico = Math.ceil( diferenca_date_topicos_milisec / ( 1000 * 60 * 60 * 24 ) );
 
-		console.log( "Data final em dias: ", diferenca_date_dias_topico );
-
 		var diferenca_date_pergunta_milisec = new Date( b ).getTime() - new Date( date_topico_inicio ).getTime();
 
 		var diferenca_date_pergunta_para_topico = Math.ceil( diferenca_date_pergunta_milisec / ( 1000 * 60 * 60 * 24 ) );
 
-		console.log( "Diferença da pergunta pro topico: ", diferenca_date_pergunta_para_topico );
-
-		console.log( "Entao a nota deveria ser ", diferenca_date_dias_topico, " menos ", diferenca_date_pergunta_para_topico );
-
 		var resultado = ( diferenca_date_dias_topico - diferenca_date_pergunta_para_topico ) / diferenca_date_dias_topico;
 		
-
 		return resultado;
-
-
-
 	}
 
 	async media( pergunta: Pergunta[], topico: Topico, dono: string ) {
@@ -239,48 +221,87 @@ export class PerguntasListPage implements OnInit {
 		var qtd_like_media = 0;
 		//isso serve pra calcular nota de compartilhador	
 
-		for ( var i = 0; i < pergunta.length; i++ ) {
-			if ( pergunta[i].dono == dono && pergunta[i].avaliacao != null ) {
-				qtd_perg++;
-				qtd_like = 0;
-				if ( pergunta[i].avaliacao == null ) {
-					qtd_lista_avaliacao = 0;
-				} else {
-					qtd_lista_avaliacao = pergunta[i].avaliacao.length;
-				}
-				for ( var j = 0; j < qtd_lista_avaliacao; j++ ) {
-					if ( pergunta[i].avaliacao[j].like == 'Like' ) {
+		//for ( var k = 0; k < pergunta.length;k++ ) {
+		//	if ( pergunta[k].dono == dono && pergunta[k].avaliacao != null ) {
+		//		qtd_perg++;
+		//		qtd_like = 0;
+		//		if ( pergunta[k].avaliacao == null ) {
+		//			qtd_lista_avaliacao = 0;
+		//		} else {
+		//			qtd_lista_avaliacao = pergunta[k].avaliacao.length;
+		//		}
+		//		for ( var l = 0; l < qtd_lista_avaliacao; l++ ) {
+		//			if ( pergunta[k].avaliacao[l].like == 'Like' ) {
+		//				qtd_like = qtd_like + 1;
+		//			}
+		//		}
+		//		if ( qtd_lista_avaliacao == 0 ) {
+		//			qtd_lista_avaliacao = 1;
+		//		}
+		//		var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[i].data_criacao );
+				
+		//		var peso_compartilhador = 0.5 + 0.5 * diferenca;
+		//		if( diferenca < 0 ){
+		//			peso_compartilhador = 0.5;
+		//		}
+		//		console.log("Peso compartilhador: ",peso_compartilhador);
+		//		if ( qtd_perg < this.turma.lista[i].lista_topico[j].qtd_esperada ) {
+		//			var fator = 1;
+		//		} else {
+		//			var fator = 1 / ((this.turma.lista[i].lista_topico[j].qtd_questoes - this.turma.lista[i].lista_topico[j].qtd_esperada) + 3);
+		//		}
+		//		console.log("Fator: ", fator);	
 
-						qtd_like = qtd_like + 1;
-					}
-				}
-				if ( qtd_lista_avaliacao == 0 ) {
-					qtd_lista_avaliacao = 1;
-				}
-				var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[i].data_criacao );
-				console.log( "Nome da pergunta: ", pergunta[i].texto );
-				console.log( "Aqui ta a diferenca: ", diferenca );
-				var peso_compartilhador = 0.5 + 0.5 * diferenca;
-				if( diferenca < 0 ){
-					peso_compartilhador = 0.5;
-				}
-				qtd_like_media = (qtd_like*peso_compartilhador) / qtd_lista_avaliacao;
-				soma_das_medias = soma_das_medias + qtd_like_media;
-			}
-		}
+		//		qtd_like_media = (qtd_like*peso_compartilhador*fator) / qtd_lista_avaliacao;
+		//		soma_das_medias = soma_das_medias + qtd_like_media;
+		//	}
+		//}
 
-		console.log( "eita" );
-		console.log( "eita" );
-		console.log( "eita" );
-		console.log( "eita" );
-		console.log( "eita" );
-		console.log( "eita" );
+		//1+1+0,9+0,20=3,15
+
 
 		// esse for serve pra achar o dono da pergunta e atualizar a nota de compartilhador dele
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
 					if ( this.turma.lista[i].lista_topico[j].nome_topico == topico.title ) {
+
+						for ( var k = 0; k < pergunta.length; k++ ) {
+							if ( pergunta[k].dono == dono && pergunta[k].avaliacao != null ) {
+								qtd_perg++;
+								qtd_like = 0;
+								if ( pergunta[k].avaliacao == null ) {
+									qtd_lista_avaliacao = 0;
+								} else {
+									qtd_lista_avaliacao = pergunta[k].avaliacao.length;
+								}
+								for ( var l = 0; l < qtd_lista_avaliacao; l++ ) {
+									if ( pergunta[k].avaliacao[l].like == 'Like' ) {
+										qtd_like = qtd_like + 1;
+									}
+								}
+								if ( qtd_lista_avaliacao == 0 ) {
+									qtd_lista_avaliacao = 1;
+								}
+								var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[i].data_criacao );
+
+								var peso_compartilhador = 0.5 + 0.5 * diferenca;
+								if ( diferenca < 0 ) {
+									peso_compartilhador = 0.5;
+								}
+								console.log( "Peso compartilhador: ", peso_compartilhador );
+								if ( qtd_perg < this.turma.lista[i].lista_topico[j].qtd_esperada ) {
+									var fator = 1;
+								} else {
+									var fator = 1 / ( ( this.turma.lista[i].lista_topico[j].qtd_questoes - this.turma.lista[i].lista_topico[j].qtd_esperada ) + 3 );
+								}
+								console.log( "Fator: ", fator );
+
+								qtd_like_media = ( qtd_like * peso_compartilhador * fator ) / qtd_lista_avaliacao;
+								soma_das_medias = soma_das_medias + qtd_like_media;
+							}
+						}
+
 						//media_total = soma_das_medias / qtd_perg;
 						//Essa era a conta dividindo pela quantidade de perguntas feitas
 						//Agora é pela quantidade de erguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
@@ -290,6 +311,7 @@ export class PerguntasListPage implements OnInit {
 				}
 			}
 		}
+
 
 
 		//aqui pra atualizar noda de avaliador
