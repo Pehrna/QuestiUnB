@@ -3,14 +3,17 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\perguntas",
-    "\\src\\app\\perguntas\\components",
-    "\\src\\app\\perguntas\\components\\pergunta-item",
-    "\\src\\app\\perguntas\\models",
-    "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\pergunta-save",
-    "\\src\\app\\perguntas\\pages\\perguntas-list"
+    "\\src\\app\\topicos\\components",
+    "\\src\\app\\topicos\\components\\topico-item",
+    "\\src\\app\\turmas",
+    "\\src\\app\\turmas\\components",
+    "\\src\\app\\turmas\\components\\turma-item",
+    "\\src\\app\\turmas\\components\\turma-login",
+    "\\src\\app\\turmas\\pages",
+    "\\src\\app\\turmas\\pages\\turma-login",
+    "\\src\\app\\turmas\\pages\\turma-save",
+    "\\src\\app\\turmas\\pages\\turmas-list"
   ],
-  "SelectedNode": "\\src\\index.html",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }

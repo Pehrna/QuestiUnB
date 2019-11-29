@@ -17,6 +17,8 @@
       C:\Users\Vinicius\AppData\Local\Android\sdk\build-tools\28.0.3\zipalign.exe -v 4 unsigned.apk nome_app.apk
            
       Wi semi feito (Falta o peso do tempo para avaliação)
+      
+      correção de bugs 
 
       Introdução de alunos a topicos ainda abertos
       (na hora de matricula na turma: se ha topicos abertos, add. se o topco ja fechou, não add esse topico)

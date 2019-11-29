@@ -88,7 +88,9 @@ export class TopicoSavePage implements OnInit {
 			}
 			if ( this.turma.lista != null ) {
 				for ( var i = 0; i < this.turma.lista.length; i++ ) {
-					this.aux = this.aux + this.turma.lista[i].nota;
+					this.aux = this.aux + this.turma.lista[i].reputacao_compartilhador;
+					console.log( "Nota agregada: ", this.turma.lista[i].reputacao_compartilhador );
+					console.log( "Somatorio: ", this.aux );
 				}
 			} else {
 				this.aux = 0;
@@ -97,14 +99,25 @@ export class TopicoSavePage implements OnInit {
 				for ( var i = 0; i < this.turma.lista.length; i++ ) {
 					this.questao = this.turma.lista[i].lista_topico;
 					if ( this.aux != 0 ) {
+
+						console.log( "Tem aluno" );
+						console.log( "Nome do aluno: ", this.turma.lista[i].id_aluno );
+						console.log( "reputacao do aluno: ", this.turma.lista[i].reputacao_compartilhador );
+						console.log( "Quantidade de questoes do topico: ", this.topicoForm.value.quantidade );
+
 						this.aux2 = this.topicoForm.value.quantidade * ( this.turma.lista[i].reputacao_compartilhador / this.aux );
-						this.aux2 = Math.round( this.aux2 );
+						console.log( "Aux2 antes de arredondar: ", this.aux2 );
+						this.aux2 = Math.ceil( this.aux2 );
+						console.log( "Aux2 depois de arredondar: ", this.aux2 );
 						if ( this.aux2 < 1 ) {
 							this.aux2 = 1;
 						}
 					} else {
+						console.log( "Nao tem aluno" );
 						this.aux2 = this.topicoForm.value.quantidade / this.turma.lista.length;
+						console.log( "Aux2 antes de arredondar: ", this.aux2 );
 						this.aux2 = Math.round( this.aux2 );
+						console.log( "Aux2 depois de arredondar: ", this.aux2 );
 						if ( this.aux2 < 1 ) {
 							this.aux2 = 1;
 						}

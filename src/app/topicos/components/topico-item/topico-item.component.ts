@@ -159,6 +159,8 @@ export class TopicoItemComponent {
 	async restituicao( turma: Turma ) {
 		var aux = 0;
 		var somatorio = 0;
+		var somatorio_compartilhador = 0;
+		var somatorio_avaliador = 0;
 		var peso_somado = 0;
 		const loading = await this.overlayService.loading( {
 			message: 'Carregando...'
@@ -181,6 +183,8 @@ export class TopicoItemComponent {
 
 				for ( var i = 0; i < turma.lista.length; i++ ) {
 					somatorio = 0;
+					somatorio_avaliador = 0;
+					somatorio_compartilhador = 0;
 					aux = 0;
 					peso_somado = 0;
 					for ( var j = 0; j < turma.lista[i].lista_topico.length; j++ ) {
@@ -195,6 +199,8 @@ export class TopicoItemComponent {
 								console.log( "Peso somado: ", peso_somado );
 								console.log( "Nota avaliador: ", turma.lista[i].lista_topico[j].nota_avaliador, " multiplicado pelo peso: ", this.topicos[k].peso_avaliacao );
 								console.log( "Nota compartilhador: ", turma.lista[i].lista_topico[j].nota_compartilhador, " multiplicado pelo peso: ", this.topicos[k].peso_pergunta );
+								somatorio_avaliador = ( +turma.lista[i].lista_topico[j].nota_avaliador + +somatorio_avaliador );
+								somatorio_compartilhador = ( turma.lista[i].lista_topico[j].nota_compartilhador + somatorio_compartilhador );
 								somatorio = ( ( turma.lista[i].lista_topico[j].nota_avaliador * this.topicos[k].peso_avaliacao ) + ( turma.lista[i].lista_topico[j].nota_compartilhador * this.topicos[k].peso_pergunta ) ) / peso_somado + somatorio;
 								console.log( "Somatorio: ", somatorio );
 
@@ -203,6 +209,8 @@ export class TopicoItemComponent {
 					}
 					console.log( "Esse aluno recebera uma nota: ", turma.lista[i].id_aluno );
 					turma.lista[i].nota = ( somatorio / aux ) * 10;
+					turma.lista[i].reputacao_avaliador = ( somatorio_avaliador / aux );
+					turma.lista[i].reputacao_compartilhador = ( somatorio_compartilhador / aux );
 					console.log( "Essa nota: ", turma.lista[i].nota );
 					const moeda = turma.lista[i].moedas + turma.lista[i].nota;
 					turma.lista[i].moedas = moeda;
