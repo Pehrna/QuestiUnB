@@ -18,14 +18,14 @@
 
 		<ng-container *ngIf="turmas.length > 0; else noTurmas">
 			<app-minhasturmas-item *ngFor="let turma of turmas"
-							[turma]="turma"
-							(select)="onSelect($event)">
+								   [turma]="turma"
+								   (select)="onSelect($event)">
 			</app-minhasturmas-item>
 		</ng-container>
 
 		<ng-template #noTurmas>
 			<ion-item lines="none">
-				Não estou matriculado em nenhuma turma
+				Nao estou matriculado em nenhuma turma
 			</ion-item>
 		</ng-template>
 
@@ -41,5 +41,9 @@
 			</ion-fab-button>
 		</ion-fab>
 	</ng-container>
+
+	<ion-item class="branco">
+		coisa em branco
+	</ion-item>
 
 </ion-content>

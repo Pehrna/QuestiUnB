@@ -85,7 +85,7 @@ export class LoginPage implements OnInit {
 				const user = await this.loginService.create( this.usuarioForm.value );
 			}
 			
-			this.navCtrl.navigateForward( this.route.snapshot.queryParamMap.get( 'redirect' ) || '/minhasturmas' );
+			this.navCtrl.navigateForward( this.route.snapshot.queryParamMap.get( 'redirect' ) || '/turmas' );
 		
 		} catch ( e ) {
 			console.log( 'Erro: ', e );

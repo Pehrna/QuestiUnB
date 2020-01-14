@@ -143,7 +143,7 @@ export class TopicoItemComponent {
 			if ( this.user.uid == turma.lista[i].id_aluno ) {
 				for ( var j = 0; j < turma.lista[i].lista_topico.length; j++ ) {
 					if ( topico.title == turma.lista[i].lista_topico[j].nome_topico ) {
-						if ( turma.lista[i].lista_topico[j].qtd_questoes < turma.lista[i].lista_topico[j].qtd_esperada ) {
+						if ( turma.lista[i].lista_topico[j].qtd_questoes < turma.lista[i].lista_topico[j].qtd_esperada && !this.usuario.professor) {
 							this.falta_pergunta = true;
 							this.quantas_falta = +turma.lista[i].lista_topico[j].qtd_esperada - +turma.lista[i].lista_topico[j].qtd_questoes;
 						} else {

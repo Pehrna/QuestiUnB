@@ -2,9 +2,8 @@
 	<ion-toolbar color="primary">
 		<app-menu-toggle slot="start" menu="main-menu">
 		</app-menu-toggle>
-		<ion-title>
-			Lista de Turmas
-		</ion-title>
+		
+		<ion-title>	Lista de Turmas	</ion-title>
 
 		<app-logout-button slot="end" menu="main-menu">
 		</app-logout-button>
@@ -20,8 +19,6 @@
 			<app-turma-item *ngFor="let turma of turmas"
 							[turma]="turma"
 							(click)="abra(turma)">
-							<!--(select)="onSelect($event)"-->
-							
 			</app-turma-item>
 		</ng-container>
 
@@ -43,5 +40,9 @@
 			</ion-fab-button>
 		</ion-fab>
 	</ng-container>
+
+	<ion-item class="branco">
+		coisa em branco
+	</ion-item>
 
 </ion-content>

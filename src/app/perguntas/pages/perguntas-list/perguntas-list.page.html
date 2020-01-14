@@ -1,11 +1,15 @@
 <ion-header>
 	<ion-toolbar color="primary">
-		<ion-buttons slot="start">
-			<ion-back-button defaultHref="/turmas/${id}/topicos">
-			</ion-back-button>
-		</ion-buttons>
+
+		<app-menu-toggle slot="start" menu="main-menu">
+		</app-menu-toggle>
+
+		<!--<ion-buttons slot="start">
+		<ion-back-button defaultHref="/turmas/${id}/topicos">
+		</ion-back-button>
+	</ion-buttons>-->
 		<ion-title>
-			Lista de perguntas
+			Lista de perguntas		
 		</ion-title>
 
 		<app-logout-button slot="end" menu="main-menu">
@@ -15,6 +19,8 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+
+
 
 	<ion-list *ngIf="(perguntas$ | async) as perguntas">
 		<ng-container *ngIf="perguntas.length>0; else noPerguntas">
@@ -41,6 +47,19 @@
 
 		</ion-fab>
 	</ng-container>
+
+	<ng-container>
+		<ion-fab vertical="bottom"
+				 horizontal="start"
+				 slot="fixed">
+			<ion-fab-button routerLink="/turmas/{{id_turma}}/topicos"
+							routerDirection="back">
+				<ion-icon name="arrow-back">
+				</ion-icon>
+			</ion-fab-button>
+		</ion-fab>
+	</ng-container>
+
 
 	<ion-item class="branco">
 		coisa em branco

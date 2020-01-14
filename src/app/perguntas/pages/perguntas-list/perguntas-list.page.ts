@@ -106,7 +106,8 @@ export class PerguntasListPage implements OnInit {
 
 	async onAvaliarBem( pergunta: Pergunta ): Promise<void> {
 
-
+		var data_avaliacao = new Date();
+		this.perguntaForm.value.data_criacao = Date();
 		const loading = await this.overlayService.loading( {
 			message: 'Atualizando...'
 		} );
@@ -117,7 +118,7 @@ export class PerguntasListPage implements OnInit {
 
 			this.aval = pergunta.avaliacao;
 			if ( this.aval == null ) {
-				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: new Date() }];
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: this.perguntaForm.value.data_criacao }];
 				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 				await this.perguntaService.update( pergunta_aval );
 				this.media( this.perg, this.topico, pergunta.dono );
@@ -133,7 +134,7 @@ export class PerguntasListPage implements OnInit {
 				}
 			}
 
-			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: new Date() } );
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Like', data_nota: this.perguntaForm.value.data_criacao } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
 			this.media( this.perg, this.topico, pergunta.dono );
@@ -158,10 +159,9 @@ export class PerguntasListPage implements OnInit {
 			} );
 
 			this.aval = pergunta.avaliacao;
-			var time = new Date();
 
 			if ( this.aval == null ) {
-				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: new Date() }];
+				this.aval = [{ id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: this.perguntaForm.value.data_criacao }];
 				const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 				await this.perguntaService.update( pergunta_aval );
 				this.media( this.perg, this.topico, pergunta.dono );
@@ -177,7 +177,7 @@ export class PerguntasListPage implements OnInit {
 				}
 			}
 
-			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: new Date() } );
+			this.aval.push( { id: this.db.createId(), dono: this.user.uid, dono_nome: this.user.displayName, like: 'Dislike', data_nota: this.perguntaForm.value.data_criacao } );
 			const pergunta_aval = { ...pergunta, avaliacao: this.aval };
 			await this.perguntaService.update( pergunta_aval );
 			this.media( this.perg, this.topico, pergunta.dono );
@@ -192,21 +192,32 @@ export class PerguntasListPage implements OnInit {
 
 	diferenca_data_topico_para_pergunta( date_topico_inicio: Date, date_topico_fim: Date, date_pergunta: Date ) {		
 
+		console.log( "Data inicio topico: ", date_topico_inicio );
+		console.log( "Data fim topico: ", date_topico_fim );
+		console.log( "Data da pergunta: ", date_pergunta );
 
 		var b = date_pergunta.toString();
 
-		b = b.substring( 0, 16 ) + '00:01:00.000-03:00';	
+		b = b.substring( 0, 16 ) + '00:01:00.000-03:00';
+
+		console.log("b: ", b);
 
 		var diferenca_date_topicos_milisec = new Date( date_topico_fim ).getTime() - new Date( date_topico_inicio ).getTime();
 
 		var diferenca_date_dias_topico = Math.ceil( diferenca_date_topicos_milisec / ( 1000 * 60 * 60 * 24 ) );
 
+		console.log( "Diferenca em dias das datas topicos: ", diferenca_date_dias_topico  );
+
 		var diferenca_date_pergunta_milisec = new Date( b ).getTime() - new Date( date_topico_inicio ).getTime();
 
 		var diferenca_date_pergunta_para_topico = Math.ceil( diferenca_date_pergunta_milisec / ( 1000 * 60 * 60 * 24 ) );
 
+		console.log( "Diferenca em dias da data inicio topicos e pergunta: ", diferenca_date_pergunta_para_topico );
+
 		var resultado = ( diferenca_date_dias_topico - diferenca_date_pergunta_para_topico ) / diferenca_date_dias_topico;
-		
+
+		console.log( "Resultado: ", resultado );
+
 		return resultado;
 	}
 
@@ -265,9 +276,9 @@ export class PerguntasListPage implements OnInit {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
 					if ( this.turma.lista[i].lista_topico[j].nome_topico == topico.title ) {
-
 						for ( var k = 0; k < pergunta.length; k++ ) {
 							if ( pergunta[k].dono == dono && pergunta[k].avaliacao != null ) {
+								console.log("Pergunta: ",pergunta[k].texto);
 								qtd_perg++;
 								qtd_like = 0;
 								if ( pergunta[k].avaliacao == null ) {
@@ -283,22 +294,29 @@ export class PerguntasListPage implements OnInit {
 								if ( qtd_lista_avaliacao == 0 ) {
 									qtd_lista_avaliacao = 1;
 								}
-								var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[i].data_criacao );
+								var diferenca = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim, pergunta[k].data_criacao );
+
+								console.log("Diferenca de dias: ", diferenca);
 
 								var peso_compartilhador = 0.5 + 0.5 * diferenca;
-								if ( diferenca < 0 ) {
+								if ( peso_compartilhador < 0.5 ) {
 									peso_compartilhador = 0.5;
 								}
 								console.log( "Peso compartilhador: ", peso_compartilhador );
-								if ( qtd_perg < this.turma.lista[i].lista_topico[j].qtd_esperada ) {
+								if ( qtd_perg <= this.turma.lista[i].lista_topico[j].qtd_esperada ) {
 									var fator = 1;
 								} else {
 									var fator = 1 / ( ( this.turma.lista[i].lista_topico[j].qtd_questoes - this.turma.lista[i].lista_topico[j].qtd_esperada ) + 3 );
 								}
 								console.log( "Fator: ", fator );
+								console.log( "Qtd Likes: ", qtd_like );
+								console.log( "Qtd lista de avaliacao: ",qtd_lista_avaliacao );
 
 								qtd_like_media = ( qtd_like * peso_compartilhador * fator ) / qtd_lista_avaliacao;
 								soma_das_medias = soma_das_medias + qtd_like_media;
+								console.log( "Qtd like media: ", qtd_like_media );
+								console.log( "Soma: ", soma_das_medias );
+
 							}
 						}
 
@@ -306,6 +324,8 @@ export class PerguntasListPage implements OnInit {
 						//Essa era a conta dividindo pela quantidade de perguntas feitas
 						//Agora é pela quantidade de erguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
 						media_total = soma_das_medias / this.turma.lista[i].lista_topico[j].qtd_esperada;
+						console.log( "Media total: ", media_total );
+
 						this.turma.lista[i].lista_topico[j].nota_compartilhador = media_total;
 					}
 				}
@@ -314,27 +334,25 @@ export class PerguntasListPage implements OnInit {
 
 
 
-		//aqui pra atualizar noda de avaliador
+		//aqui pra atualizar nota de avaliador
 		var flag_aux = false;
 		var nota = 0;
 		var r1 = 0;
 		var r2 = 0;
 		var r_agregado = 0;
+		var fator_tempo = 0;
 		//percorre lista de alunos
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
+			console.log("Avaliacoes do : ",this.turma.lista[i].id_aluno);
 			qtd_perg = 0;
 			soma_das_medias = 0;
 			media_total = 0;
 			qtd_lista_avaliacao = 0;
-			qtd_like = 0;
 			qtd_like_media = 0;
-			flag_aux = false;
-			nota = 0;
-			r1 = 0;
 			r2 = 0;
-			r_agregado = 0;
 
 			for ( var j = 0; j < pergunta.length; j++ ) {
+				console.log("Pergunta: ", pergunta[j].texto);
 				flag_aux = false;
 				qtd_like = 0;
 				r1 = 0;
@@ -352,6 +370,8 @@ export class PerguntasListPage implements OnInit {
 					if ( pergunta[j].avaliacao[k].dono == this.turma.lista[i].id_aluno ) {
 						flag_aux = true;
 						qtd_perg++;
+						fator_tempo = this.diferenca_data_topico_para_pergunta( pergunta[j].data_criacao, topico.data_fim, pergunta[j].avaliacao[k].data_nota );
+						console.log( "fator tempo: ", fator_tempo );
 						if ( pergunta[j].avaliacao[k].like == 'Like' ) {
 							nota++;
 						}
@@ -371,13 +391,25 @@ export class PerguntasListPage implements OnInit {
 					r_agregado = 1 - r1;
 
 				}
-				r2 = r2 + r_agregado;
+				var peso_avaliador = 0.5 + 0.5 * fator_tempo;
+				if ( peso_avaliador < 0.5 ) {
+					peso_avaliador = 0.5;
+				}
+
+				console.log("Nota agregando: ", r_agregado);
+				console.log("Peso de avaliador: ",peso_avaliador);
+
+				//fator_tempo = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim,  );
+				
+				r2 = r2 + r_agregado * peso_avaliador;
+				console.log("R2: ",r2);
 				//aqui é aplicada o peso do tempo
 			}
 			if ( qtd_perg == 0 ) {
 				qtd_perg = 1;
 			}
 			media_total = r2 / qtd_perg;
+			console.log("Media total: ",media_total);
 
 			for ( var m = 0; m < this.turma.lista[i].lista_topico.length; m++ ) {
 				if ( this.turma.lista[i].lista_topico[m].nome_topico == this.topico.title ) {
