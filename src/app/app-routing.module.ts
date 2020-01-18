@@ -9,7 +9,9 @@ const routes: Routes = [
 	{ path: 'turmas', loadChildren: './turmas/turmas.module#TurmasModule' },
 	{ path: 'turmas/:id/topicos', loadChildren: './topicos/topicos.module#TopicosModule' },
 	{ path: 'turmas/:id/topicos/:idd/perguntas', loadChildren: './perguntas/perguntas.module#PerguntasModule' },
-	{ path: 'minhasturmas', loadChildren: './minhasturmas/minhasturmas.module#MinhasturmasModule' }
+	{ path: 'minhasturmas', loadChildren: './minhasturmas/minhasturmas.module#MinhasturmasModule' },
+	{ path: 'perfil', loadChildren: './perfil/perfil.module#PerfilModule' }
+
 
 
 	//,canLoad: [AuthGuard]

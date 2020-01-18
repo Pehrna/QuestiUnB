@@ -3,21 +3,13 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\minhasturams\\pages",
-    "\\src\\app\\minhasturams\\pages\\minhasturmas-list",
     "\\src\\app\\minhasturmas",
-    "\\src\\app\\minhasturmas\\components",
-    "\\src\\app\\minhasturmas\\components\\minhasturmas-item",
     "\\src\\app\\minhasturmas\\pages",
-    "\\src\\app\\perguntas",
-    "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\perguntas-list",
-    "\\src\\app\\topicos",
-    "\\src\\app\\topicos\\pages",
-    "\\src\\app\\topicos\\pages\\topicos-list",
-    "\\src\\app\\turmas",
-    "\\src\\app\\turmas\\pages"
+    "\\src\\app\\minhasturmas\\pages\\minhasturmas-list",
+    "\\src\\app\\perfil",
+    "\\src\\app\\perfil\\pages",
+    "\\src\\app\\perfil\\pages\\perfil"
   ],
-  "SelectedNode": "\\src\\app\\minhasturmas\\components\\minhasturmas-item\\minhasturmas-item.component.ts",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }

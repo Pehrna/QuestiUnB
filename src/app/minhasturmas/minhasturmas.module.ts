@@ -4,8 +4,7 @@ import { MinhasturmasRoutingModule } from './minhasturmas-routing.module';
 
 @NgModule({
   declarations: [],
-  imports: [
-    
+  imports: [    
     MinhasturmasRoutingModule
   ]
 })

@@ -28,8 +28,9 @@ export class AppComponent {
 
 		this.pages = [
 			//{ url: '/tasks', directions: 'back', icon: 'checkmark', text: 'Tasks' },
-			{ url: '/turmas', directions: 'forward', icon: 'bookmarks', text: 'Turmas' },
-			{ url: '/minhasturmas', directions: 'forward', icon: 'bookmarks', text: 'Minhas turmas' }
+			{ url: '/turmas', directions: 'forward', icon: 'archive', text: 'Turmas' },
+			{ url: '/minhasturmas', directions: 'forward', icon: 'bookmarks', text: 'Minhas turmas' },
+			{ url: '/perfil', directions: 'forward', icon: 'contact', text: 'Perfil' }
 		];
 
 		this.authService.authState$.subscribe( user => ( this.user = user ) );
