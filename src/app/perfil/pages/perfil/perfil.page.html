@@ -13,5 +13,14 @@
 </ion-header>
 
 <ion-content>
-
+	<ion-menu-toggle autoHide="false">
+		<ion-list>
+			<ion-list-header *ngIf="user">
+				<h1>{{user.displayName}}</h1>
+			</ion-list-header>
+			<ion-item>
+				<h3>{{usuario.matricula}}</h3>
+			</ion-item>
+		</ion-list>
+	</ion-menu-toggle>
 </ion-content>
