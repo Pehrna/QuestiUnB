@@ -18,7 +18,7 @@ export class PerfilPage implements OnInit {
 	usuario: Dado = { id: '', nome: '', matricula: '', email: '', professor: false };
 	usuario$: Observable<Dado>;
 	user: firebase.User;
-	turmas$: Observable<Turma[]>;
+	turmas$: Observable<Turma[]>;	
 	invite: Inscrito[];
 
 	constructor(
@@ -51,4 +51,6 @@ export class PerfilPage implements OnInit {
 		}
 	}
 
+
+	async onSelect( turma: Turma ): Promise<void> { } 
 }

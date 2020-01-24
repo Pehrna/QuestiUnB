@@ -1,0 +1,35 @@
+<ion-item-sliding #sliding>
+
+	<ion-item>
+		<div><h4><strong> {{turma.name}}  </strong></h4> </div>
+	</ion-item>
+
+	<ng-container *ngIf="!usuario.professor">
+		<div>
+			Sua reputacao nessa turma:
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="true">
+		<div>
+			Ainda ha perguntas a fazer!
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="true">
+		<div>
+			<ion-item>
+				<!--{{tchurma}}-->
+			</ion-item>
+		</div>
+	</ng-container>
+
+	<!--<ion-item-options side="start">
+		<ion-item-option color="primary"
+						 (click)="update.emit(turma); sliding.close()">
+			<ion-icon slot="icon-only"
+					  name="construct"></ion-icon>
+		</ion-item-option>
+	</ion-item-options>-->
+	<!--Aula 52 do curso firebase ionic 4-->
+</ion-item-sliding>

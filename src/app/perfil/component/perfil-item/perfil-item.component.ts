@@ -1,36 +1,42 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Turma } from 'src/app/turmas/Models/Turmas.models';
+import { perfil } from '../../Models/perfil.model';
 import { Dado } from 'src/app/auth/pages/auth.model';
 import { Observable } from 'rxjs';
+import { Turma } from 'src/app/turmas/Models/Turmas.models';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { LoginService } from 'src/app/core/services/service.service';
 import { OverlayService } from 'src/app/core/services/overlay.service';
+import { TurmasService } from 'src/app/turmas/services/turmas.service';
+
+
 
 @Component( {
-	selector: 'app-minhasturmas-item',
-	//template: '<button (click)="sendMessage()">Send Message</button>',
-	templateUrl: './minhasturmas-item.component.html',
-	styleUrls: ['./minhasturmas-item.component.scss'],
+	selector: 'app-perfil-item',
+	templateUrl: './perfil-item.component.html',
+	styleUrls: ['./perfil-item.component.scss'],
 } )
-export class MinhasTurmasItemComponent {
+export class PerfilItemComponent {
 
 	user: firebase.User;
 	usuario: Dado = { ...this.usuario, professor: false };
 	usuario$: Observable<Dado>;
+	turmas$: Observable<Turma[]>;
+	turmas: Turma[];
+	tchurma: Turma;
 	tamanho: number = 0;
 	divDisable: boolean = false;
 
 	constructor(
 		private authService: AuthService,
 		private serviceService: LoginService,
-		private overlayService: OverlayService
+		private overlayService: OverlayService,
+		private turmaService: TurmasService
 	) { }
 
+	//@Input() perfil: perfil;
 	@Input() turma: Turma;
-	@Output() done = new EventEmitter<Turma>();
-	@Output() update = new EventEmitter<Turma>();
-	@Output() delete = new EventEmitter<Turma>();
-	@Output() select = new EventEmitter<Turma>();
+	@Output() id = new EventEmitter<perfil>();
+	@Output() vai = new EventEmitter<perfil>();
 
 	async ngOnInit() {
 		const loading = await this.overlayService.loading( {
@@ -38,17 +44,25 @@ export class MinhasTurmasItemComponent {
 		} );
 		try {
 
-			if ( this.turma.lista !== null ) {
-				this.tamanho = this.turma.lista.length;
-			} else {
-				this.tamanho = 0;
-			}
+			//if ( this.turma.lista !== null ) {
+			//	this.tamanho = this.turma.lista.length;
+			//} else {
+			//	this.tamanho = 0;
+			//}
 			await this.authService.authState$.subscribe( user => {
 				this.user = user
 			} );
 			this.usuario$ = this.serviceService.get( this.user.uid );
 			await this.usuario$.subscribe( usu => {
 				this.usuario = usu;
+			} );
+
+			this.turmas$ = this.turmaService.getAllTurma();
+			await this.turmas$.subscribe( turm => {
+
+				this.turmas = turm;
+				console.log( this.turmas );
+
 			} );
 
 			if ( this.tamanho == 0 && this.turma.dono == this.user.uid ) {
@@ -63,7 +77,10 @@ export class MinhasTurmasItemComponent {
 				}
 			}
 
-			
+			console.log( this.divDisable );
+			console.log( this.turmas );
+			console.log( this.tchurma );
+			console.log( this.turma );
 		} catch ( error ) {
 			console.log( 'Erro ao carregar turmas: ', error )
 			await this.overlayService.toast( {
@@ -73,4 +90,5 @@ export class MinhasTurmasItemComponent {
 			loading.dismiss();
 		}
 	}
+
 }

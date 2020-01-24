@@ -26,8 +26,7 @@ export class MinhasturmasListPage implements OnInit {
 		private navCtrl: NavController,
 		private authService: AuthService,
 		private serviceService: LoginService,
-		private overlayService: OverlayService
-) { }
+		private overlayService: OverlayService ) { }
 
 	async ngOnInit(): Promise<void> {
 		const loading = await this.overlayService.loading( {

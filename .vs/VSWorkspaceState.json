@@ -4,12 +4,15 @@
     "\\src",
     "\\src\\app",
     "\\src\\app\\minhasturmas",
+    "\\src\\app\\minhasturmas\\components",
+    "\\src\\app\\minhasturmas\\components\\minhasturmas-item",
     "\\src\\app\\minhasturmas\\pages",
     "\\src\\app\\minhasturmas\\pages\\minhasturmas-list",
     "\\src\\app\\perfil",
+    "\\src\\app\\perfil\\component",
     "\\src\\app\\perfil\\pages",
     "\\src\\app\\perfil\\pages\\perfil"
   ],
-  "SelectedNode": "\\config.xml",
+  "SelectedNode": "\\src\\app\\minhasturmas\\components\\minhasturmas-item\\minhasturmas-item.component.html",
   "PreviewInSolutionExplorer": false
 }
