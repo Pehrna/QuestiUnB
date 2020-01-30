@@ -3,16 +3,17 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\minhasturmas",
-    "\\src\\app\\minhasturmas\\components",
-    "\\src\\app\\minhasturmas\\components\\minhasturmas-item",
-    "\\src\\app\\minhasturmas\\pages",
-    "\\src\\app\\minhasturmas\\pages\\minhasturmas-list",
+    "\\src\\app\\minhasturams\\pages",
+    "\\src\\app\\minhasturams\\pages\\minhasturmas-list",
     "\\src\\app\\perfil",
-    "\\src\\app\\perfil\\component",
     "\\src\\app\\perfil\\pages",
-    "\\src\\app\\perfil\\pages\\perfil"
+    "\\src\\app\\perfil\\pages\\perfil",
+    "\\src\\app\\perguntas\\pages",
+    "\\src\\app\\perguntas\\pages\\pergunta-save",
+    "\\src\\app\\topicos",
+    "\\src\\app\\topicos\\components",
+    "\\src\\app\\topicos\\components\\topico-item"
   ],
-  "SelectedNode": "\\src\\app\\minhasturmas\\components\\minhasturmas-item\\minhasturmas-item.component.html",
+  "SelectedNode": "\\config.xml",
   "PreviewInSolutionExplorer": false
 }

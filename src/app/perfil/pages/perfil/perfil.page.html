@@ -15,19 +15,17 @@
 <ion-content class="ion-padding">
 	<ion-list>
 		<ion-list-header *ngIf="user">
-			<h1>{{user.displayName}}</h1>
+			<h1>{{user.displayName}} - {{usuario.matricula}}</h1>
 		</ion-list-header>
-		<ion-item>
-			<h3>{{usuario.matricula}}</h3>
-		</ion-item>
 	</ion-list>
+
 
 	<ion-list *ngIf="(turmas$ | async) as turmas">
 
 		<ng-container *ngIf="turmas.length > 0; else noTurmas">
 			<app-perfil-item *ngFor="let turma of turmas"
-								   [turma]="turma"
-								   (select)="onSelect($event)">
+							 [turma]="turma"
+							 (select)="onSelect($event)">
 			</app-perfil-item>
 		</ng-container>
 
@@ -38,5 +36,9 @@
 		</ng-template>
 
 	</ion-list>
+
+	<ion-item class="branco">
+		coisa em branco
+	</ion-item>
 
 </ion-content>

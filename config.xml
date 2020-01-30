@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.5.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="io.ionic.starter" version="0.5.9" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>QUIZWIKI</name>
     <description>
       Pra produzir o .apk:
@@ -20,7 +20,7 @@
       
       correção de bugs x2
       
-      criação da pagina de perfil x3
+      criação da pagina de perfil x4
 
       Introdução de alunos a topicos ainda abertos
       (na hora de matricula na turma: se ha topicos abertos, add. se o topco ja fechou, não add esse topico)

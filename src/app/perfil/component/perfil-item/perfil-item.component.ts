@@ -25,6 +25,8 @@ export class PerfilItemComponent {
 	tchurma: Turma;
 	tamanho: number = 0;
 	divDisable: boolean = false;
+	haveQuestion: boolean = false;
+	nota: number = 0;
 
 	constructor(
 		private authService: AuthService,
@@ -33,7 +35,6 @@ export class PerfilItemComponent {
 		private turmaService: TurmasService
 	) { }
 
-	//@Input() perfil: perfil;
 	@Input() turma: Turma;
 	@Output() id = new EventEmitter<perfil>();
 	@Output() vai = new EventEmitter<perfil>();
@@ -44,25 +45,17 @@ export class PerfilItemComponent {
 		} );
 		try {
 
-			//if ( this.turma.lista !== null ) {
-			//	this.tamanho = this.turma.lista.length;
-			//} else {
-			//	this.tamanho = 0;
-			//}
+			if ( this.turma.lista !== null ) {
+				this.tamanho = this.turma.lista.length;
+			} else {
+				this.tamanho = 0;
+			}
 			await this.authService.authState$.subscribe( user => {
 				this.user = user
 			} );
 			this.usuario$ = this.serviceService.get( this.user.uid );
 			await this.usuario$.subscribe( usu => {
 				this.usuario = usu;
-			} );
-
-			this.turmas$ = this.turmaService.getAllTurma();
-			await this.turmas$.subscribe( turm => {
-
-				this.turmas = turm;
-				console.log( this.turmas );
-
 			} );
 
 			if ( this.tamanho == 0 && this.turma.dono == this.user.uid ) {
@@ -73,14 +66,23 @@ export class PerfilItemComponent {
 				if ( this.turma.lista !== undefined || this.turma.dono == this.user.uid ) {
 					if ( this.turma.lista[i].id_aluno == this.user.uid || this.turma.dono == this.user.uid ) {
 						this.divDisable = true;
+						this.nota = this.turma.lista[i].nota;
+						for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
+							if ( this.turma.lista[i].lista_topico[j].qtd_questoes < this.turma.lista[i].lista_topico[j].qtd_esperada ) {
+								this.haveQuestion = true;
+							}							
+						}
 					}
 				}
 			}
 
-			console.log( this.divDisable );
-			console.log( this.turmas );
-			console.log( this.tchurma );
-			console.log( this.turma );
+			this.turmas$ = this.turmaService.getAllTurma();
+			await this.turmas$.subscribe( turm => {
+
+				this.turmas = turm;
+
+			} );
+
 		} catch ( error ) {
 			console.log( 'Erro ao carregar turmas: ', error )
 			await this.overlayService.toast( {
