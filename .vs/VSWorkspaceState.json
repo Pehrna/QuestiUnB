@@ -3,17 +3,10 @@
     "",
     "\\src",
     "\\src\\app",
-    "\\src\\app\\minhasturams\\pages",
-    "\\src\\app\\minhasturams\\pages\\minhasturmas-list",
-    "\\src\\app\\perfil",
-    "\\src\\app\\perfil\\pages",
-    "\\src\\app\\perfil\\pages\\perfil",
+    "\\src\\app\\perguntas",
     "\\src\\app\\perguntas\\pages",
-    "\\src\\app\\perguntas\\pages\\pergunta-save",
-    "\\src\\app\\topicos",
-    "\\src\\app\\topicos\\components",
-    "\\src\\app\\topicos\\components\\topico-item"
+    "\\src\\app\\perguntas\\pages\\perguntas-list"
   ],
-  "SelectedNode": "\\config.xml",
+  "SelectedNode": "\\src\\app\\perguntas\\pages\\perguntas-list\\perguntas-list.page.ts",
   "PreviewInSolutionExplorer": false
 }

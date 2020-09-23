@@ -105,6 +105,7 @@ export class PerguntasListPage implements OnInit {
 	}
 
 	async onAvaliarBem( pergunta: Pergunta ): Promise<void> {
+		//Aqui função pra adicionar like nas avaliações dessa pergunta
 
 		var data_avaliacao = new Date();
 		this.perguntaForm.value.data_criacao = Date();
@@ -128,7 +129,7 @@ export class PerguntasListPage implements OnInit {
 			for ( var i = 0; i < this.aval.length; i++ ) {
 				if ( this.aval[i].dono == this.user.uid ) {
 					await this.overlayService.toast( {
-						message: 'Essa pergunta j� foi avaliada!'
+						message: 'Essa pergunta j� foi avaliada!'
 					} );
 					return;
 				}
@@ -149,6 +150,7 @@ export class PerguntasListPage implements OnInit {
 
 
 	async onAvaliarMal( pergunta: Pergunta ): Promise<void> {
+		//Aqui função pra adicionar dislike nas avaliações dessa pergunta
 
 		const loading = await this.overlayService.loading( {
 			message: 'Atualizando...'
@@ -171,7 +173,7 @@ export class PerguntasListPage implements OnInit {
 			for ( var i = 0; i < this.aval.length; i++ ) {
 				if ( this.aval[i].dono == this.user.uid ) {
 					await this.overlayService.toast( {
-						message: 'Essa pergunta j� foi avaliada!'
+						message: 'Essa pergunta j� foi avaliada!'
 					} );
 					return;
 				}
@@ -191,6 +193,7 @@ export class PerguntasListPage implements OnInit {
 
 
 	diferenca_data_topico_para_pergunta( date_topico_inicio: Date, date_topico_fim: Date, date_pergunta: Date ) {		
+//Calcula o tempo da pergunta desde a abertura do topico
 
 		console.log( "Data inicio topico: ", date_topico_inicio );
 		console.log( "Data fim topico: ", date_topico_fim );
@@ -222,6 +225,8 @@ export class PerguntasListPage implements OnInit {
 	}
 
 	async media( pergunta: Pergunta[], topico: Topico, dono: string ) {
+		//Aqui atualiza toda a lista de alunos, dando update nas notas de avaliador e postador de todos. 
+		//É chamada quando se avalia uma pergunta, com like ou dislike
 
 
 		var qtd_perg = 0;
@@ -230,7 +235,8 @@ export class PerguntasListPage implements OnInit {
 		var qtd_lista_avaliacao = 0;
 		var qtd_like = 0;
 		var qtd_like_media = 0;
-		//isso serve pra calcular nota de compartilhador	
+		//isso servia pra calcular nota de compartilhador, mas la embaixo tem esse bloco aprimorado
+		//deixei pq poderia precisar 
 
 		//for ( var k = 0; k < pergunta.length;k++ ) {
 		//	if ( pergunta[k].dono == dono && pergunta[k].avaliacao != null ) {
@@ -272,12 +278,14 @@ export class PerguntasListPage implements OnInit {
 
 
 		// esse for serve pra achar o dono da pergunta e atualizar a nota de compartilhador dele
+		// os pesos aplicados aqui são o do tempo que a pergunta foi postada e se foi excedente ao numero de perguntas pedido
 		for ( var i = 0; i < this.turma.lista.length; i++ ) {
 			if ( this.turma.lista[i].id_aluno == dono ) {
 				for ( var j = 0; j < this.turma.lista[i].lista_topico.length; j++ ) {
 					if ( this.turma.lista[i].lista_topico[j].nome_topico == topico.title ) {
 						for ( var k = 0; k < pergunta.length; k++ ) {
 							if ( pergunta[k].dono == dono && pergunta[k].avaliacao != null ) {
+								//FORs aninhados pra percorrer toda a lista de turmas/topicos/perguntas
 								console.log("Pergunta: ",pergunta[k].texto);
 								qtd_perg++;
 								qtd_like = 0;
@@ -298,11 +306,15 @@ export class PerguntasListPage implements OnInit {
 
 								console.log("Diferenca de dias: ", diferenca);
 
+								//aplica o peso do tempo
 								var peso_compartilhador = 0.5 + 0.5 * diferenca;
 								if ( peso_compartilhador < 0.5 ) {
 									peso_compartilhador = 0.5;
 								}
+
 								console.log( "Peso compartilhador: ", peso_compartilhador );
+
+								//Aqui aplica o peso de questões excedentes
 								if ( qtd_perg <= this.turma.lista[i].lista_topico[j].qtd_esperada ) {
 									var fator = 1;
 								} else {
@@ -322,10 +334,10 @@ export class PerguntasListPage implements OnInit {
 
 						//media_total = soma_das_medias / qtd_perg;
 						//Essa era a conta dividindo pela quantidade de perguntas feitas
-						//Agora � pela quantidade de erguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
+						//Agora � pela quantidade de perguntas esperadas: Se ele fez menos, recebe menos. Se fez mais, recebe mais
 						media_total = soma_das_medias / this.turma.lista[i].lista_topico[j].qtd_esperada;
 						console.log( "Media total: ", media_total );
-
+						//atualiza esse aluno
 						this.turma.lista[i].lista_topico[j].nota_compartilhador = media_total;
 					}
 				}
@@ -350,7 +362,7 @@ export class PerguntasListPage implements OnInit {
 			qtd_lista_avaliacao = 0;
 			qtd_like_media = 0;
 			r2 = 0;
-
+			//percorre lista de perguntas
 			for ( var j = 0; j < pergunta.length; j++ ) {
 				console.log("Pergunta: ", pergunta[j].texto);
 				flag_aux = false;
@@ -377,11 +389,13 @@ export class PerguntasListPage implements OnInit {
 						}
 					}
 				}
+				//descobre a media atual da pergunta
 				if ( qtd_lista_avaliacao == 0 ) {
 					qtd_like_media = 0.5;
 				} else {
 					qtd_like_media = qtd_like / qtd_lista_avaliacao;
 				}
+				//manhazinha pra tornar o numero positivo
 				if ( flag_aux ) {
 					r1 = nota - qtd_like_media;
 					if ( r1 < 0 ) {
@@ -391,6 +405,8 @@ export class PerguntasListPage implements OnInit {
 					r_agregado = 1 - r1;
 
 				}
+
+				//calcula o peso tempo
 				var peso_avaliador = 0.5 + 0.5 * fator_tempo;
 				if ( peso_avaliador < 0.5 ) {
 					peso_avaliador = 0.5;
@@ -400,24 +416,23 @@ export class PerguntasListPage implements OnInit {
 				console.log("Peso de avaliador: ",peso_avaliador);
 
 				//fator_tempo = this.diferenca_data_topico_para_pergunta( topico.data_inicio, topico.data_fim,  );
-				
+				//aplica o peso tempo
 				r2 = r2 + r_agregado * peso_avaliador;
 				console.log("R2: ",r2);
-				//aqui � aplicada o peso do tempo
 			}
 			if ( qtd_perg == 0 ) {
 				qtd_perg = 1;
 			}
 			media_total = r2 / qtd_perg;
 			console.log("Media total: ",media_total);
-
+			//aqui atualiza a lista
 			for ( var m = 0; m < this.turma.lista[i].lista_topico.length; m++ ) {
 				if ( this.turma.lista[i].lista_topico[m].nome_topico == this.topico.title ) {
 					this.turma.lista[i].lista_topico[m].nota_avaliador = media_total;
 				}
 			}
 		}
-
+		//aqui atualiza tudo no banco de uma vez
 		await this.turmaService.updateTurma( this.turma );
 
 	}
